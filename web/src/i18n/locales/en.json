@@ -1,0 +1,72 @@
+{
+  "app": {
+    "name": "Universal Library"
+  },
+  "nav": {
+    "catalog": "Catalog",
+    "myLoans": "My Loans",
+    "staffDesk": "Staff Desk",
+    "login": "Log in",
+    "logout": "Log out",
+    "register": "Register"
+  },
+  "auth": {
+    "email": "Email",
+    "password": "Password",
+    "name": "Full name",
+    "loginTitle": "Log in",
+    "registerTitle": "Create an account",
+    "loginSubmit": "Log in",
+    "registerSubmit": "Create account",
+    "noAccount": "No account yet?",
+    "haveAccount": "Already have an account?",
+    "invalidCredentials": "Invalid email or password.",
+    "emailTaken": "That email is already registered."
+  },
+  "catalog": {
+    "title": "Catalog",
+    "searchPlaceholder": "Search by title, author, or ISBN",
+    "available": "{{count}} of {{total}} available",
+    "noResults": "No books found.",
+    "placeHold": "Place hold",
+    "holdPlaced": "Hold placed",
+    "alreadyOnHold": "You already have a hold on this book",
+    "byAuthor": "by {{author}}"
+  },
+  "loans": {
+    "title": "My Loans",
+    "loansHeading": "Current & past loans",
+    "holdsHeading": "My holds",
+    "dueOn": "Due {{date}}",
+    "returned": "Returned {{date}}",
+    "overdue": "Overdue",
+    "renew": "Renew",
+    "renewed": "Renewed until {{date}}",
+    "cancelHold": "Cancel hold",
+    "holdStatus": {
+      "WAITING": "Waiting in queue",
+      "READY": "Ready for pickup",
+      "FULFILLED": "Fulfilled",
+      "EXPIRED": "Expired",
+      "CANCELLED": "Cancelled"
+    },
+    "noLoans": "You have no loans yet.",
+    "noHolds": "You have no holds."
+  },
+  "staffDesk": {
+    "title": "Staff Desk",
+    "checkoutHeading": "Check out a copy",
+    "returnHeading": "Return a copy",
+    "barcode": "Copy barcode",
+    "memberId": "Member ID",
+    "checkout": "Check out",
+    "return": "Return",
+    "success": "Success",
+    "copyReserved": "This copy is now reserved for member {{memberId}}"
+  },
+  "common": {
+    "loading": "Loading…",
+    "error": "Something went wrong.",
+    "cancel": "Cancel"
+  }
+}

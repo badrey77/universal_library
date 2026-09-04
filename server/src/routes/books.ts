@@ -1,0 +1,111 @@
+import { Router } from "express";
+import { z } from "zod";
+import { prisma } from "../lib/prisma";
+import { requireAuth, requireRole } from "../middleware/auth";
+
+const router = Router();
+
+router.get("/", async (req, res) => {
+  const query = typeof req.query.q === "string" ? req.query.q.trim() : "";
+
+  const books = await prisma.book.findMany({
+    where: query
+      ? {
+          OR: [
+            { title: { contains: query } },
+            { author: { contains: query } },
+            { isbn: { contains: query } },
+          ],
+        }
+      : undefined,
+    include: { copies: true },
+    orderBy: { title: "asc" },
+  });
+
+  res.json(
+    books.map((b) => ({
+      id: b.id,
+      isbn: b.isbn,
+      title: b.title,
+      author: b.author,
+      description: b.description,
+      totalCopies: b.copies.length,
+      availableCopies: b.copies.filter((c) => c.status === "AVAILABLE").length,
+    }))
+  );
+});
+
+router.get("/:id", async (req, res) => {
+  const book = await prisma.book.findUnique({
+    where: { id: req.params.id },
+    include: { copies: true },
+  });
+  if (!book) return res.status(404).json({ error: "Book not found" });
+
+  res.json({
+    id: book.id,
+    isbn: book.isbn,
+    title: book.title,
+    author: book.author,
+    description: book.description,
+    copies: book.copies.map((c) => ({ id: c.id, barcode: c.barcode, status: c.status })),
+  });
+});
+
+const createBookSchema = z.object({
+  isbn: z.string().min(1),
+  title: z.string().min(1),
+  author: z.string().min(1),
+  description: z.string().optional(),
+  initialCopies: z.number().int().min(0).max(50).default(1),
+});
+
+router.post("/", requireAuth, requireRole("STAFF"), async (req, res) => {
+  const parsed = createBookSchema.safeParse(req.body);
+  if (!parsed.success) return res.status(400).json({ error: parsed.error.flatten() });
+  const { isbn, title, author, description, initialCopies } = parsed.data;
+
+  const existing = await prisma.book.findUnique({ where: { isbn } });
+  if (existing) return res.status(409).json({ error: "ISBN already exists" });
+
+  const book = await prisma.book.create({
+    data: {
+      isbn,
+      title,
+      author,
+      description,
+      copies: {
+        create: Array.from({ length: initialCopies }, (_, i) => ({
+          barcode: `${isbn}-C${i + 1}`,
+        })),
+      },
+    },
+    include: { copies: true },
+  });
+
+  res.status(201).json(book);
+});
+
+const addCopySchema = z.object({
+  barcode: z.string().min(1).optional(),
+});
+
+router.post("/:id/copies", requireAuth, requireRole("STAFF"), async (req, res) => {
+  const parsed = addCopySchema.safeParse(req.body ?? {});
+  if (!parsed.success) return res.status(400).json({ error: parsed.error.flatten() });
+
+  const book = await prisma.book.findUnique({
+    where: { id: req.params.id },
+    include: { copies: true },
+  });
+  if (!book) return res.status(404).json({ error: "Book not found" });
+
+  const barcode = parsed.data.barcode ?? `${book.isbn}-C${book.copies.length + 1}`;
+  const copy = await prisma.copy.create({
+    data: { barcode, bookId: book.id },
+  });
+
+  res.status(201).json(copy);
+});
+
+export default router;

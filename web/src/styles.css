@@ -1,0 +1,248 @@
+:root {
+  --color-bg: #faf8f5;
+  --color-surface: #ffffff;
+  --color-border: #e2ddd3;
+  --color-text: #2b2620;
+  --color-muted: #746b5e;
+  --color-primary: #7a4b2a;
+  --color-primary-contrast: #ffffff;
+  --color-accent: #b5813f;
+  --color-danger: #a13a3a;
+  --radius: 10px;
+  font-family: "Segoe UI", "Noto Naskh Arabic", system-ui, -apple-system, sans-serif;
+  color-scheme: light;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--color-bg);
+  color: var(--color-text);
+}
+
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+a {
+  color: var(--color-primary);
+}
+
+header.app-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.85rem 1.5rem;
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  flex-wrap: wrap;
+}
+
+.brand {
+  font-weight: 700;
+  font-size: 1.1rem;
+  text-decoration: none;
+  color: var(--color-text);
+}
+
+nav.main-nav {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+nav.main-nav a,
+nav.main-nav button.link {
+  text-decoration: none;
+  color: var(--color-muted);
+  font-size: 0.95rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  font: inherit;
+}
+
+nav.main-nav a.active,
+nav.main-nav a:hover {
+  color: var(--color-primary);
+}
+
+main.app-main {
+  flex: 1;
+  width: 100%;
+  max-width: 920px;
+  margin-inline: auto;
+  padding: 1.5rem;
+}
+
+.lang-switcher {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.lang-switcher button {
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  border-radius: 6px;
+  padding: 0.25rem 0.55rem;
+  font-size: 0.8rem;
+  cursor: pointer;
+  color: var(--color-muted);
+}
+
+.lang-switcher button.active {
+  background: var(--color-primary);
+  color: var(--color-primary-contrast);
+  border-color: var(--color-primary);
+}
+
+h1 {
+  font-size: 1.5rem;
+  margin-block-end: 1rem;
+}
+
+.search-input {
+  width: 100%;
+  padding: 0.6rem 0.8rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  font-size: 1rem;
+  margin-block-end: 1.25rem;
+  background: var(--color-surface);
+  color: var(--color-text);
+}
+
+.card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 1rem 1.1rem;
+  margin-block-end: 0.75rem;
+}
+
+.card-title {
+  font-weight: 600;
+  margin: 0 0 0.15rem;
+}
+
+.card-title a {
+  text-decoration: none;
+  color: var(--color-text);
+}
+
+.card-meta {
+  color: var(--color-muted);
+  font-size: 0.9rem;
+  margin: 0 0 0.5rem;
+}
+
+.pill {
+  display: inline-block;
+  padding: 0.15rem 0.55rem;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.pill.available {
+  background: #e4f2e6;
+  color: #2f6b3a;
+}
+
+.pill.unavailable {
+  background: #f4e6e6;
+  color: var(--color-danger);
+}
+
+.pill.status-ON_LOAN { background: #f4e6e6; color: var(--color-danger); }
+.pill.status-AVAILABLE { background: #e4f2e6; color: #2f6b3a; }
+.pill.status-ON_HOLD { background: #fbeed6; color: #966211; }
+.pill.status-LOST,
+.pill.status-REPAIR { background: #e5e5e5; color: #555; }
+
+button.primary {
+  background: var(--color-primary);
+  color: var(--color-primary-contrast);
+  border: none;
+  border-radius: 8px;
+  padding: 0.55rem 1rem;
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+
+button.primary:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+button.secondary {
+  background: transparent;
+  color: var(--color-primary);
+  border: 1px solid var(--color-primary);
+  border-radius: 8px;
+  padding: 0.5rem 0.9rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+form.stack {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  max-width: 360px;
+}
+
+form.stack label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  font-size: 0.9rem;
+  color: var(--color-muted);
+}
+
+form.stack input {
+  padding: 0.55rem 0.7rem;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  font-size: 1rem;
+}
+
+.error-text {
+  color: var(--color-danger);
+  font-size: 0.9rem;
+}
+
+.success-text {
+  color: #2f6b3a;
+  font-size: 0.9rem;
+}
+
+.desk-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+@media (max-width: 640px) {
+  .desk-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.section-heading {
+  font-size: 1.1rem;
+  margin-block: 1.5rem 0.5rem;
+}
+
+.muted {
+  color: var(--color-muted);
+  font-size: 0.9rem;
+}

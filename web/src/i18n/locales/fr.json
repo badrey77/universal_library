@@ -1,0 +1,72 @@
+{
+  "app": {
+    "name": "Bibliothèque Universelle"
+  },
+  "nav": {
+    "catalog": "Catalogue",
+    "myLoans": "Mes emprunts",
+    "staffDesk": "Guichet du personnel",
+    "login": "Connexion",
+    "logout": "Déconnexion",
+    "register": "S'inscrire"
+  },
+  "auth": {
+    "email": "E-mail",
+    "password": "Mot de passe",
+    "name": "Nom complet",
+    "loginTitle": "Connexion",
+    "registerTitle": "Créer un compte",
+    "loginSubmit": "Se connecter",
+    "registerSubmit": "Créer le compte",
+    "noAccount": "Pas encore de compte ?",
+    "haveAccount": "Vous avez déjà un compte ?",
+    "invalidCredentials": "E-mail ou mot de passe invalide.",
+    "emailTaken": "Cet e-mail est déjà enregistré."
+  },
+  "catalog": {
+    "title": "Catalogue",
+    "searchPlaceholder": "Rechercher par titre, auteur ou ISBN",
+    "available": "{{count}} sur {{total}} disponible(s)",
+    "noResults": "Aucun livre trouvé.",
+    "placeHold": "Réserver",
+    "holdPlaced": "Réservation effectuée",
+    "alreadyOnHold": "Vous avez déjà une réservation pour ce livre",
+    "byAuthor": "par {{author}}"
+  },
+  "loans": {
+    "title": "Mes emprunts",
+    "loansHeading": "Emprunts en cours et passés",
+    "holdsHeading": "Mes réservations",
+    "dueOn": "À rendre le {{date}}",
+    "returned": "Rendu le {{date}}",
+    "overdue": "En retard",
+    "renew": "Renouveler",
+    "renewed": "Renouvelé jusqu'au {{date}}",
+    "cancelHold": "Annuler la réservation",
+    "holdStatus": {
+      "WAITING": "En attente",
+      "READY": "Prêt pour retrait",
+      "FULFILLED": "Satisfaite",
+      "EXPIRED": "Expirée",
+      "CANCELLED": "Annulée"
+    },
+    "noLoans": "Vous n'avez aucun emprunt.",
+    "noHolds": "Vous n'avez aucune réservation."
+  },
+  "staffDesk": {
+    "title": "Guichet du personnel",
+    "checkoutHeading": "Emprunter un exemplaire",
+    "returnHeading": "Retourner un exemplaire",
+    "barcode": "Code-barres de l'exemplaire",
+    "memberId": "ID du membre",
+    "checkout": "Emprunter",
+    "return": "Retourner",
+    "success": "Succès",
+    "copyReserved": "Cet exemplaire est maintenant réservé pour le membre {{memberId}}"
+  },
+  "common": {
+    "loading": "Chargement…",
+    "error": "Une erreur est survenue.",
+    "cancel": "Annuler"
+  }
+}

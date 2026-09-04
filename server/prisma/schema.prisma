@@ -1,0 +1,77 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// SQLite has no native enum support in Prisma, so these are documented
+// string unions instead: Role = PATRON | STAFF; CopyStatus = AVAILABLE |
+// ON_LOAN | ON_HOLD | LOST | REPAIR; HoldStatus = WAITING | READY |
+// FULFILLED | EXPIRED | CANCELLED.
+
+model Book {
+  id          String   @id @default(cuid())
+  isbn        String   @unique
+  title       String
+  author      String
+  description String?
+  createdAt   DateTime @default(now())
+
+  copies Copy[]
+  holds  Hold[]
+}
+
+model Copy {
+  id        String     @id @default(cuid())
+  barcode   String   @unique
+  status    String   @default("AVAILABLE")
+  branch    String   @default("main")
+  createdAt DateTime @default(now())
+
+  book   Book   @relation(fields: [bookId], references: [id])
+  bookId String
+
+  loans Loan[]
+}
+
+model Member {
+  id           String   @id @default(cuid())
+  name         String
+  email        String   @unique
+  passwordHash String
+  role         String   @default("PATRON")
+  borrowLimit  Int      @default(5)
+  createdAt    DateTime @default(now())
+
+  loans Loan[]
+  holds Hold[]
+}
+
+model Loan {
+  id           String    @id @default(cuid())
+  checkedOutAt DateTime  @default(now())
+  dueAt        DateTime
+  returnedAt   DateTime?
+  renewalCount Int       @default(0)
+
+  copy     Copy   @relation(fields: [copyId], references: [id])
+  copyId   String
+  member   Member @relation(fields: [memberId], references: [id])
+  memberId String
+}
+
+model Hold {
+  id          String     @id @default(cuid())
+  requestedAt DateTime  @default(now())
+  status      String    @default("WAITING")
+  expiresAt   DateTime?
+  copyId      String?
+
+  book     Book   @relation(fields: [bookId], references: [id])
+  bookId   String
+  member   Member @relation(fields: [memberId], references: [id])
+  memberId String
+}
