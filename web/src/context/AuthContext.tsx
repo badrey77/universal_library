@@ -76,6 +76,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const logout = useCallback(() => {
+    // Best-effort: revokes the token server-side via tokenVersion so it
+    // can't be replayed even if it leaked. Still clear local state even if
+    // the request fails (e.g. offline) so the user isn't stuck "logged in".
+    api.post("/auth/logout").catch(() => {});
     setToken(null);
     setMember(null);
   }, []);

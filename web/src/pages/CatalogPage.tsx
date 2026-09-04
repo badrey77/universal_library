@@ -8,14 +8,19 @@ export function CatalogPage() {
   const { t } = useTranslation();
   const [query, setQuery] = useState("");
   const [books, setBooks] = useState<BookSummary[] | null>(null);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     const handle = setTimeout(() => {
       const search = query ? `?q=${encodeURIComponent(query)}` : "";
+      setError(false);
       api
         .get<BookSummary[]>(`/books${search}`)
         .then(setBooks)
-        .catch(() => setBooks([]));
+        .catch(() => {
+          setBooks([]);
+          setError(true);
+        });
     }, 250);
     return () => clearTimeout(handle);
   }, [query]);
@@ -31,7 +36,11 @@ export function CatalogPage() {
       />
 
       {books === null && <p className="muted">{t("common.loading")}</p>}
-      {books?.length === 0 && <p className="muted">{t("catalog.noResults")}</p>}
+      {books?.length === 0 && (
+        <p className={error ? "error-text" : "muted"}>
+          {error ? t("common.error") : t("catalog.noResults")}
+        </p>
+      )}
 
       {books?.map((book) => (
         <div className="card" key={book.id}>

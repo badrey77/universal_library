@@ -2,7 +2,7 @@ import { FormEvent, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-import { ApiError } from "../api/client";
+import { translateApiError } from "../api/errorMessages";
 
 export function RegisterPage() {
   const { t } = useTranslation();
@@ -22,9 +22,7 @@ export function RegisterPage() {
       await register(name, email, password);
       navigate("/");
     } catch (err) {
-      setError(
-        err instanceof ApiError && err.status === 409 ? t("auth.emailTaken") : t("common.error")
-      );
+      setError(translateApiError(t, err));
     } finally {
       setSubmitting(false);
     }

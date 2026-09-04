@@ -40,7 +40,7 @@ router.get("/:id", async (req, res) => {
     where: { id: req.params.id },
     include: { copies: true },
   });
-  if (!book) return res.status(404).json({ error: "Book not found" });
+  if (!book) return res.status(404).json({ error: "Book not found", code: "BOOK_NOT_FOUND" });
 
   res.json({
     id: book.id,
@@ -62,11 +62,15 @@ const createBookSchema = z.object({
 
 router.post("/", requireAuth, requireRole("STAFF"), async (req, res) => {
   const parsed = createBookSchema.safeParse(req.body);
-  if (!parsed.success) return res.status(400).json({ error: parsed.error.flatten() });
+  if (!parsed.success) {
+    return res.status(400).json({ error: parsed.error.flatten(), code: "VALIDATION_ERROR" });
+  }
   const { isbn, title, author, description, initialCopies } = parsed.data;
 
   const existing = await prisma.book.findUnique({ where: { isbn } });
-  if (existing) return res.status(409).json({ error: "ISBN already exists" });
+  if (existing) {
+    return res.status(409).json({ error: "ISBN already exists", code: "ISBN_TAKEN" });
+  }
 
   const book = await prisma.book.create({
     data: {
@@ -92,13 +96,15 @@ const addCopySchema = z.object({
 
 router.post("/:id/copies", requireAuth, requireRole("STAFF"), async (req, res) => {
   const parsed = addCopySchema.safeParse(req.body ?? {});
-  if (!parsed.success) return res.status(400).json({ error: parsed.error.flatten() });
+  if (!parsed.success) {
+    return res.status(400).json({ error: parsed.error.flatten(), code: "VALIDATION_ERROR" });
+  }
 
   const book = await prisma.book.findUnique({
     where: { id: req.params.id },
     include: { copies: true },
   });
-  if (!book) return res.status(404).json({ error: "Book not found" });
+  if (!book) return res.status(404).json({ error: "Book not found", code: "BOOK_NOT_FOUND" });
 
   const barcode = parsed.data.barcode ?? `${book.isbn}-C${book.copies.length + 1}`;
   const copy = await prisma.copy.create({

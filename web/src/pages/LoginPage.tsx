@@ -2,7 +2,7 @@ import { FormEvent, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-import { ApiError } from "../api/client";
+import { translateApiError } from "../api/errorMessages";
 
 export function LoginPage() {
   const { t } = useTranslation();
@@ -21,7 +21,7 @@ export function LoginPage() {
       await login(email, password);
       navigate("/");
     } catch (err) {
-      setError(err instanceof ApiError ? t("auth.invalidCredentials") : t("common.error"));
+      setError(translateApiError(t, err));
     } finally {
       setSubmitting(false);
     }

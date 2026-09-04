@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
-import { api, ApiError } from "../api/client";
+import { api } from "../api/client";
+import { translateApiError } from "../api/errorMessages";
 import type { BookDetail } from "../api/types";
 import { useAuth } from "../context/AuthContext";
 
@@ -10,12 +11,17 @@ export function BookDetailPage() {
   const { id } = useParams<{ id: string }>();
   const { member } = useAuth();
   const [book, setBook] = useState<BookDetail | null>(null);
+  const [loadError, setLoadError] = useState(false);
   const [holdMessage, setHoldMessage] = useState<string | null>(null);
   const [holdError, setHoldError] = useState<string | null>(null);
 
   useEffect(() => {
     if (!id) return;
-    api.get<BookDetail>(`/books/${id}`).then(setBook);
+    setLoadError(false);
+    api
+      .get<BookDetail>(`/books/${id}`)
+      .then(setBook)
+      .catch(() => setLoadError(true));
   }, [id]);
 
   async function placeHold() {
@@ -26,12 +32,11 @@ export function BookDetailPage() {
       await api.post("/holds", { bookId: id });
       setHoldMessage(t("catalog.holdPlaced"));
     } catch (err) {
-      setHoldError(
-        err instanceof ApiError && err.status === 409 ? t("catalog.alreadyOnHold") : t("common.error")
-      );
+      setHoldError(translateApiError(t, err));
     }
   }
 
+  if (loadError) return <p className="error-text">{t("common.error")}</p>;
   if (!book) return <p className="muted">{t("common.loading")}</p>;
 
   const availableCount = book.copies.filter((c) => c.status === "AVAILABLE").length;

@@ -1,12 +1,74 @@
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { api, ApiError } from "../api/client";
+import { api } from "../api/client";
+import { translateApiError } from "../api/errorMessages";
+import type { Member } from "../api/types";
+
+function MemberPicker({ onChange }: { onChange: (id: string) => void }) {
+  const { t } = useTranslation();
+  const [query, setQuery] = useState("");
+  const [results, setResults] = useState<Member[]>([]);
+  const [selectedLabel, setSelectedLabel] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (selectedLabel || query.trim().length < 2) {
+      setResults([]);
+      return;
+    }
+    const handle = setTimeout(() => {
+      api
+        .get<Member[]>(`/members?q=${encodeURIComponent(query)}`)
+        .then(setResults)
+        .catch(() => setResults([]));
+    }, 250);
+    return () => clearTimeout(handle);
+  }, [query, selectedLabel]);
+
+  function pick(member: Member) {
+    setSelectedLabel(`${member.name} (${member.email})`);
+    setQuery(`${member.name} (${member.email})`);
+    setResults([]);
+    onChange(member.id);
+  }
+
+  function onInputChange(value: string) {
+    setQuery(value);
+    if (selectedLabel) {
+      setSelectedLabel(null);
+      onChange("");
+    }
+  }
+
+  return (
+    <div>
+      <input
+        required
+        value={query}
+        placeholder={t("staffDesk.memberSearchPlaceholder")}
+        onChange={(e) => onInputChange(e.target.value)}
+      />
+      {!selectedLabel && query.trim().length >= 2 && (
+        <ul className="member-results">
+          {results.length === 0 && <li className="muted">{t("staffDesk.memberNoResults")}</li>}
+          {results.map((m) => (
+            <li key={m.id}>
+              <button type="button" onClick={() => pick(m)}>
+                {m.name} — {m.email}
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+}
 
 export function StaffDeskPage() {
   const { t } = useTranslation();
 
   const [checkoutBarcode, setCheckoutBarcode] = useState("");
   const [memberId, setMemberId] = useState("");
+  const [memberPickerKey, setMemberPickerKey] = useState(0);
   const [checkoutMessage, setCheckoutMessage] = useState<string | null>(null);
   const [checkoutError, setCheckoutError] = useState<string | null>(null);
 
@@ -18,12 +80,18 @@ export function StaffDeskPage() {
     e.preventDefault();
     setCheckoutError(null);
     setCheckoutMessage(null);
+    if (!memberId) {
+      setCheckoutError(t("staffDesk.memberNoResults"));
+      return;
+    }
     try {
       await api.post("/circulation/checkout", { barcode: checkoutBarcode, memberId });
       setCheckoutMessage(t("staffDesk.success"));
       setCheckoutBarcode("");
+      setMemberId("");
+      setMemberPickerKey((k) => k + 1);
     } catch (err) {
-      setCheckoutError(err instanceof ApiError ? err.message : t("common.error"));
+      setCheckoutError(translateApiError(t, err));
     }
   }
 
@@ -43,7 +111,7 @@ export function StaffDeskPage() {
       );
       setReturnBarcode("");
     } catch (err) {
-      setReturnError(err instanceof ApiError ? err.message : t("common.error"));
+      setReturnError(translateApiError(t, err));
     }
   }
 
@@ -64,7 +132,7 @@ export function StaffDeskPage() {
             </label>
             <label>
               {t("staffDesk.memberId")}
-              <input required value={memberId} onChange={(e) => setMemberId(e.target.value)} />
+              <MemberPicker key={memberPickerKey} onChange={setMemberId} />
             </label>
             {checkoutError && <p className="error-text">{checkoutError}</p>}
             {checkoutMessage && <p className="success-text">{checkoutMessage}</p>}

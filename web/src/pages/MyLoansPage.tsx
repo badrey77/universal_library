@@ -1,17 +1,27 @@
 import { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { api } from "../api/client";
+import { translateApiError } from "../api/errorMessages";
 import type { Hold, Loan } from "../api/types";
 
 export function MyLoansPage() {
   const { t, i18n } = useTranslation();
   const [loans, setLoans] = useState<Loan[] | null>(null);
   const [holds, setHolds] = useState<Hold[] | null>(null);
+  const [loadError, setLoadError] = useState(false);
+  const [actionError, setActionError] = useState<string | null>(null);
   const [busyId, setBusyId] = useState<string | null>(null);
 
   const load = useCallback(() => {
-    api.get<Loan[]>("/members/me/loans").then(setLoans);
-    api.get<Hold[]>("/members/me/holds").then(setHolds);
+    setLoadError(false);
+    api
+      .get<Loan[]>("/members/me/loans")
+      .then(setLoans)
+      .catch(() => setLoadError(true));
+    api
+      .get<Hold[]>("/members/me/holds")
+      .then(setHolds)
+      .catch(() => setLoadError(true));
   }, []);
 
   useEffect(load, [load]);
@@ -22,9 +32,12 @@ export function MyLoansPage() {
 
   async function renew(loanId: string) {
     setBusyId(loanId);
+    setActionError(null);
     try {
       await api.post(`/circulation/renew`, { loanId });
       load();
+    } catch (err) {
+      setActionError(translateApiError(t, err));
     } finally {
       setBusyId(null);
     }
@@ -32,9 +45,12 @@ export function MyLoansPage() {
 
   async function cancelHold(holdId: string) {
     setBusyId(holdId);
+    setActionError(null);
     try {
       await api.del(`/holds/${holdId}`);
       load();
+    } catch (err) {
+      setActionError(translateApiError(t, err));
     } finally {
       setBusyId(null);
     }
@@ -45,6 +61,8 @@ export function MyLoansPage() {
   return (
     <div>
       <h1>{t("loans.title")}</h1>
+      {loadError && <p className="error-text">{t("common.error")}</p>}
+      {actionError && <p className="error-text">{actionError}</p>}
 
       <h2 className="section-heading">{t("loans.loansHeading")}</h2>
       {loans?.length === 0 && <p className="muted">{t("loans.noLoans")}</p>}

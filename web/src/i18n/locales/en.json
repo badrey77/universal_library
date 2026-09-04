@@ -58,7 +58,9 @@
     "checkoutHeading": "Check out a copy",
     "returnHeading": "Return a copy",
     "barcode": "Copy barcode",
-    "memberId": "Member ID",
+    "memberId": "Member",
+    "memberSearchPlaceholder": "Search by name or email",
+    "memberNoResults": "No matching members",
     "checkout": "Check out",
     "return": "Return",
     "success": "Success",
@@ -68,5 +70,24 @@
     "loading": "Loading…",
     "error": "Something went wrong.",
     "cancel": "Cancel"
+  },
+  "errors": {
+    "COPY_NOT_FOUND": "No copy found with that barcode.",
+    "MEMBER_NOT_FOUND": "No member found with that ID.",
+    "COPY_RESERVED_FOR_HOLD": "This copy is reserved for another member's hold.",
+    "COPY_NOT_AVAILABLE": "This copy is not available right now.",
+    "BORROW_LIMIT_REACHED": "This member has reached their borrowing limit.",
+    "COPY_STATUS_CONFLICT": "This copy just changed status — please try again.",
+    "NOT_ON_LOAN": "This copy is not currently on loan.",
+    "LOAN_NOT_FOUND": "Loan not found.",
+    "LOAN_ALREADY_RETURNED": "This loan has already been returned.",
+    "FORBIDDEN": "You don't have permission to do that.",
+    "RENEWAL_LIMIT_REACHED": "This loan has reached its renewal limit.",
+    "HOLD_BLOCKS_RENEWAL": "Can't renew — another member is waiting for this book.",
+    "BOOK_NOT_FOUND": "Book not found.",
+    "HOLD_NOT_FOUND": "Hold not found.",
+    "HOLD_ALREADY_FULFILLED": "This hold has already been fulfilled.",
+    "VALIDATION_ERROR": "Please check your input and try again.",
+    "RATE_LIMITED": "Too many attempts — please wait a bit and try again."
   }
 }

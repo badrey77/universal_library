@@ -58,7 +58,9 @@
     "checkoutHeading": "Emprunter un exemplaire",
     "returnHeading": "Retourner un exemplaire",
     "barcode": "Code-barres de l'exemplaire",
-    "memberId": "ID du membre",
+    "memberId": "Membre",
+    "memberSearchPlaceholder": "Rechercher par nom ou e-mail",
+    "memberNoResults": "Aucun membre correspondant",
     "checkout": "Emprunter",
     "return": "Retourner",
     "success": "Succès",
@@ -68,5 +70,24 @@
     "loading": "Chargement…",
     "error": "Une erreur est survenue.",
     "cancel": "Annuler"
+  },
+  "errors": {
+    "COPY_NOT_FOUND": "Aucun exemplaire trouvé avec ce code-barres.",
+    "MEMBER_NOT_FOUND": "Aucun membre trouvé avec cet identifiant.",
+    "COPY_RESERVED_FOR_HOLD": "Cet exemplaire est réservé pour la réservation d'un autre membre.",
+    "COPY_NOT_AVAILABLE": "Cet exemplaire n'est pas disponible actuellement.",
+    "BORROW_LIMIT_REACHED": "Ce membre a atteint sa limite d'emprunts.",
+    "COPY_STATUS_CONFLICT": "Le statut de cet exemplaire vient de changer — veuillez réessayer.",
+    "NOT_ON_LOAN": "Cet exemplaire n'est pas actuellement emprunté.",
+    "LOAN_NOT_FOUND": "Emprunt introuvable.",
+    "LOAN_ALREADY_RETURNED": "Cet emprunt a déjà été rendu.",
+    "FORBIDDEN": "Vous n'avez pas la permission de faire cela.",
+    "RENEWAL_LIMIT_REACHED": "Cet emprunt a atteint sa limite de renouvellements.",
+    "HOLD_BLOCKS_RENEWAL": "Impossible de renouveler — un autre membre attend ce livre.",
+    "BOOK_NOT_FOUND": "Livre introuvable.",
+    "HOLD_NOT_FOUND": "Réservation introuvable.",
+    "HOLD_ALREADY_FULFILLED": "Cette réservation a déjà été satisfaite.",
+    "VALIDATION_ERROR": "Veuillez vérifier votre saisie et réessayer.",
+    "RATE_LIMITED": "Trop de tentatives — veuillez patienter puis réessayer."
   }
 }

@@ -58,7 +58,9 @@
     "checkoutHeading": "إعارة نسخة",
     "returnHeading": "إرجاع نسخة",
     "barcode": "الرمز الشريطي للنسخة",
-    "memberId": "معرّف العضو",
+    "memberId": "العضو",
+    "memberSearchPlaceholder": "البحث بالاسم أو البريد الإلكتروني",
+    "memberNoResults": "لا يوجد أعضاء مطابقون",
     "checkout": "إعارة",
     "return": "إرجاع",
     "success": "تم بنجاح",
@@ -68,5 +70,24 @@
     "loading": "جارٍ التحميل…",
     "error": "حدث خطأ ما.",
     "cancel": "إلغاء"
+  },
+  "errors": {
+    "COPY_NOT_FOUND": "لم يتم العثور على نسخة بهذا الرمز الشريطي.",
+    "MEMBER_NOT_FOUND": "لم يتم العثور على عضو بهذا المعرّف.",
+    "COPY_RESERVED_FOR_HOLD": "هذه النسخة محجوزة لعضو آخر.",
+    "COPY_NOT_AVAILABLE": "هذه النسخة غير متاحة حالياً.",
+    "BORROW_LIMIT_REACHED": "بلغ هذا العضو الحد الأقصى للإعارة.",
+    "COPY_STATUS_CONFLICT": "تغيرت حالة هذه النسخة للتو — يرجى المحاولة مرة أخرى.",
+    "NOT_ON_LOAN": "هذه النسخة غير معارة حالياً.",
+    "LOAN_NOT_FOUND": "الإعارة غير موجودة.",
+    "LOAN_ALREADY_RETURNED": "تم إرجاع هذه الإعارة بالفعل.",
+    "FORBIDDEN": "ليس لديك إذن للقيام بذلك.",
+    "RENEWAL_LIMIT_REACHED": "بلغت هذه الإعارة الحد الأقصى للتجديد.",
+    "HOLD_BLOCKS_RENEWAL": "لا يمكن التجديد — عضو آخر ينتظر هذا الكتاب.",
+    "BOOK_NOT_FOUND": "الكتاب غير موجود.",
+    "HOLD_NOT_FOUND": "الحجز غير موجود.",
+    "HOLD_ALREADY_FULFILLED": "تم تنفيذ هذا الحجز بالفعل.",
+    "VALIDATION_ERROR": "يرجى التحقق من المدخلات والمحاولة مرة أخرى.",
+    "RATE_LIMITED": "محاولات كثيرة جداً — يرجى الانتظار ثم إعادة المحاولة."
   }
 }

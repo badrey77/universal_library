@@ -46,6 +46,9 @@ model Member {
   role            String   @default("PATRON")
   borrowLimit     Int      @default(5)
   activeLoanCount Int      @default(0)
+  // Bumped on logout so previously issued JWTs stop verifying immediately,
+  // instead of staying valid until their natural expiry.
+  tokenVersion    Int      @default(0)
   createdAt       DateTime @default(now())
 
   loans Loan[]
