@@ -10,6 +10,7 @@ export function MyLoansPage() {
   const [holds, setHolds] = useState<Hold[] | null>(null);
   const [loadError, setLoadError] = useState(false);
   const [actionError, setActionError] = useState<string | null>(null);
+  const [actionMessage, setActionMessage] = useState<string | null>(null);
   const [busyId, setBusyId] = useState<string | null>(null);
 
   const load = useCallback(() => {
@@ -33,8 +34,10 @@ export function MyLoansPage() {
   async function renew(loanId: string) {
     setBusyId(loanId);
     setActionError(null);
+    setActionMessage(null);
     try {
-      await api.post(`/circulation/renew`, { loanId });
+      const updated = await api.post<Loan>(`/circulation/renew`, { loanId });
+      setActionMessage(t("loans.renewed", { date: formatDate(updated.dueAt) }));
       load();
     } catch (err) {
       setActionError(translateApiError(t, err));
@@ -46,6 +49,7 @@ export function MyLoansPage() {
   async function cancelHold(holdId: string) {
     setBusyId(holdId);
     setActionError(null);
+    setActionMessage(null);
     try {
       await api.del(`/holds/${holdId}`);
       load();
@@ -63,6 +67,7 @@ export function MyLoansPage() {
       <h1>{t("loans.title")}</h1>
       {loadError && <p className="error-text">{t("common.error")}</p>}
       {actionError && <p className="error-text">{actionError}</p>}
+      {actionMessage && <p className="muted">{actionMessage}</p>}
 
       <h2 className="section-heading">{t("loans.loansHeading")}</h2>
       {loans?.length === 0 && <p className="muted">{t("loans.noLoans")}</p>}

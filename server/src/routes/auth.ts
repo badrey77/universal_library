@@ -36,7 +36,7 @@ router.post("/register", authLimiter, async (req, res) => {
     return res.status(409).json({ error: "Email already registered", code: "EMAIL_TAKEN" });
   }
 
-  const passwordHash = await bcrypt.hash(password, 10);
+  const passwordHash = await bcrypt.hash(password, 12);
   const member = await prisma.member.create({
     data: { name, email, passwordHash, role: "PATRON" },
   });
