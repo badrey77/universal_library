@@ -1,7 +1,17 @@
 import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
 
-const JWT_SECRET = process.env.JWT_SECRET || "dev-secret-change-me";
+function loadJwtSecret(): string {
+  const value = process.env.JWT_SECRET;
+  if (!value || value.length < 32) {
+    throw new Error(
+      "JWT_SECRET environment variable must be set to a random string of at least 32 characters"
+    );
+  }
+  return value;
+}
+
+const JWT_SECRET: string = loadJwtSecret();
 
 export interface AuthUser {
   id: string;

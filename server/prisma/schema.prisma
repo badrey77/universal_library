@@ -35,16 +35,18 @@ model Copy {
   bookId String
 
   loans Loan[]
+  holds Hold[]
 }
 
 model Member {
   id           String   @id @default(cuid())
   name         String
   email        String   @unique
-  passwordHash String
-  role         String   @default("PATRON")
-  borrowLimit  Int      @default(5)
-  createdAt    DateTime @default(now())
+  passwordHash    String
+  role            String   @default("PATRON")
+  borrowLimit     Int      @default(5)
+  activeLoanCount Int      @default(0)
+  createdAt       DateTime @default(now())
 
   loans Loan[]
   holds Hold[]
@@ -64,14 +66,21 @@ model Loan {
 }
 
 model Hold {
-  id          String     @id @default(cuid())
+  id          String    @id @default(cuid())
   requestedAt DateTime  @default(now())
   status      String    @default("WAITING")
   expiresAt   DateTime?
-  copyId      String?
 
   book     Book   @relation(fields: [bookId], references: [id])
   bookId   String
   member   Member @relation(fields: [memberId], references: [id])
   memberId String
+
+  // Set once a copy is reserved for this hold (status flips to READY).
+  copy   Copy?   @relation(fields: [copyId], references: [id])
+  copyId String?
+
+  @@index([bookId, status])
+  @@index([memberId, status])
+  @@index([copyId])
 }

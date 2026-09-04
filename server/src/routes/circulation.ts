@@ -40,10 +40,14 @@ router.post("/checkout", requireAuth, requireRole("STAFF"), async (req, res) => 
         throw new HttpError(409, `Copy is not available (status: ${copy.status})`);
       }
 
-      const activeLoanCount = await tx.loan.count({
-        where: { memberId, returnedAt: null },
+      // Compare-and-swap against the member's own row instead of a separate
+      // count-then-compare: two concurrent checkouts racing near the limit
+      // can't both pass, since only one UPDATE can match the WHERE clause.
+      const memberClaim = await tx.member.updateMany({
+        where: { id: memberId, activeLoanCount: { lt: member.borrowLimit } },
+        data: { activeLoanCount: { increment: 1 } },
       });
-      if (activeLoanCount >= member.borrowLimit) {
+      if (memberClaim.count !== 1) {
         throw new HttpError(409, "Member has reached their borrowing limit");
       }
 
@@ -101,23 +105,41 @@ router.post("/return", requireAuth, requireRole("STAFF"), async (req, res) => {
         where: { id: loan.id },
         data: { returnedAt: new Date() },
       });
-
-      const nextHold = await tx.hold.findFirst({
-        where: { bookId: copy.bookId, status: "WAITING" },
-        orderBy: { requestedAt: "asc" },
+      await tx.member.update({
+        where: { id: loan.memberId },
+        data: { activeLoanCount: { decrement: 1 } },
       });
 
-      if (nextHold) {
-        await tx.copy.update({ where: { id: copy.id }, data: { status: "ON_HOLD" } });
-        await tx.hold.update({
-          where: { id: nextHold.id },
+      // Claim the oldest waiting hold via CAS, retrying against the next one
+      // in line if a concurrent return already claimed it first — prevents
+      // two returns from double-assigning the same hold.
+      const triedHoldIds: string[] = [];
+      let claimed: { id: string; memberId: string } | null = null;
+      for (let attempt = 0; attempt < 5; attempt++) {
+        const candidate = await tx.hold.findFirst({
+          where: { bookId: copy.bookId, status: "WAITING", id: { notIn: triedHoldIds } },
+          orderBy: { requestedAt: "asc" },
+        });
+        if (!candidate) break;
+
+        const claim = await tx.hold.updateMany({
+          where: { id: candidate.id, status: "WAITING" },
           data: {
             status: "READY",
             copyId: copy.id,
             expiresAt: addDays(new Date(), HOLD_READY_DAYS),
           },
         });
-        return { copyStatus: "ON_HOLD", reservedForMemberId: nextHold.memberId };
+        if (claim.count === 1) {
+          claimed = { id: candidate.id, memberId: candidate.memberId };
+          break;
+        }
+        triedHoldIds.push(candidate.id);
+      }
+
+      if (claimed) {
+        await tx.copy.update({ where: { id: copy.id }, data: { status: "ON_HOLD" } });
+        return { copyStatus: "ON_HOLD", reservedForMemberId: claimed.memberId };
       }
 
       await tx.copy.update({ where: { id: copy.id }, data: { status: "AVAILABLE" } });
