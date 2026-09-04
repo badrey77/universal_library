@@ -51,7 +51,9 @@ export function BookDetailPage() {
       {book.copies.map((copy) => (
         <div className="card" key={copy.id}>
           <code>{copy.barcode}</code>{" "}
-          <span className={`pill status-${copy.status}`}>{copy.status}</span>
+          <span className={`pill status-${copy.status}`}>
+            {t(`catalog.copyStatus.${copy.status}`)}
+          </span>
         </div>
       ))}
 

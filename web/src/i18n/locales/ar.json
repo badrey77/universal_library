@@ -21,7 +21,8 @@
     "noAccount": "ليس لديك حساب؟",
     "haveAccount": "لديك حساب بالفعل؟",
     "invalidCredentials": "البريد الإلكتروني أو كلمة المرور غير صحيحة.",
-    "emailTaken": "هذا البريد الإلكتروني مسجل بالفعل."
+    "emailTaken": "هذا البريد الإلكتروني مسجل بالفعل.",
+    "passwordHint": "10 أحرف على الأقل"
   },
   "catalog": {
     "title": "الفهرس",
@@ -31,7 +32,14 @@
     "placeHold": "طلب حجز",
     "holdPlaced": "تم الحجز",
     "alreadyOnHold": "لديك حجز بالفعل لهذا الكتاب",
-    "byAuthor": "بقلم {{author}}"
+    "byAuthor": "بقلم {{author}}",
+    "copyStatus": {
+      "AVAILABLE": "متاحة",
+      "ON_LOAN": "معارة",
+      "ON_HOLD": "محجوزة",
+      "LOST": "مفقودة",
+      "REPAIR": "قيد الإصلاح"
+    }
   },
   "loans": {
     "title": "إعاراتي",

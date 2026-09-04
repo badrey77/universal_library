@@ -21,7 +21,8 @@
     "noAccount": "Pas encore de compte ?",
     "haveAccount": "Vous avez déjà un compte ?",
     "invalidCredentials": "E-mail ou mot de passe invalide.",
-    "emailTaken": "Cet e-mail est déjà enregistré."
+    "emailTaken": "Cet e-mail est déjà enregistré.",
+    "passwordHint": "Au moins 10 caractères"
   },
   "catalog": {
     "title": "Catalogue",
@@ -31,7 +32,14 @@
     "placeHold": "Réserver",
     "holdPlaced": "Réservation effectuée",
     "alreadyOnHold": "Vous avez déjà une réservation pour ce livre",
-    "byAuthor": "par {{author}}"
+    "byAuthor": "par {{author}}",
+    "copyStatus": {
+      "AVAILABLE": "Disponible",
+      "ON_LOAN": "Emprunté",
+      "ON_HOLD": "Réservé",
+      "LOST": "Perdu",
+      "REPAIR": "En réparation"
+    }
   },
   "loans": {
     "title": "Mes emprunts",

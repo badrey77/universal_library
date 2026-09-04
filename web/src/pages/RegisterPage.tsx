@@ -45,10 +45,11 @@ export function RegisterPage() {
           <input
             type="password"
             required
-            minLength={6}
+            minLength={10}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
+          <span className="muted">{t("auth.passwordHint")}</span>
         </label>
         {error && <p className="error-text">{error}</p>}
         <button className="primary" type="submit" disabled={submitting}>

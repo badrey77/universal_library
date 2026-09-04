@@ -1,5 +1,6 @@
 import express from "express";
 import cors from "cors";
+import helmet from "helmet";
 import authRouter from "./routes/auth";
 import booksRouter from "./routes/books";
 import circulationRouter from "./routes/circulation";
@@ -8,7 +9,13 @@ import membersRouter from "./routes/members";
 import { sweepExpiredHolds } from "./lib/holdSweep";
 
 const app = express();
-app.use(cors());
+app.use(helmet());
+// Restrict to the known frontend origin(s) rather than reflecting any
+// origin — CORS_ORIGIN can be a comma-separated list for multiple deploys.
+const allowedOrigins = (process.env.CORS_ORIGIN ?? "http://localhost:5173")
+  .split(",")
+  .map((origin) => origin.trim());
+app.use(cors({ origin: allowedOrigins }));
 app.use(express.json());
 
 app.get("/api/health", (_req, res) => res.json({ ok: true }));

@@ -25,7 +25,7 @@ model Book {
 }
 
 model Copy {
-  id        String     @id @default(cuid())
+  id        String   @id @default(cuid())
   barcode   String   @unique
   status    String   @default("AVAILABLE")
   branch    String   @default("main")
@@ -39,9 +39,9 @@ model Copy {
 }
 
 model Member {
-  id           String   @id @default(cuid())
-  name         String
-  email        String   @unique
+  id              String   @id @default(cuid())
+  name            String
+  email           String   @unique
   passwordHash    String
   role            String   @default("PATRON")
   borrowLimit     Int      @default(5)
@@ -66,6 +66,9 @@ model Loan {
   copyId   String
   member   Member @relation(fields: [memberId], references: [id])
   memberId String
+
+  @@index([memberId, returnedAt])
+  @@index([copyId, returnedAt])
 }
 
 model Hold {
