@@ -46,6 +46,21 @@ export interface Loan {
   copy: Copy & { book: { id: string; title: string; author: string } };
 }
 
+export interface BookHistory {
+  totalLoans: number;
+  currentlyOnLoan: number;
+}
+
+export interface BookHistoryDetailEntry {
+  loanId: string;
+  memberName: string;
+  memberEmail: string;
+  copyBarcode: string;
+  checkedOutAt: string;
+  returnedAt: string | null;
+  renewalCount: number;
+}
+
 export interface Hold {
   id: string;
   requestedAt: string;

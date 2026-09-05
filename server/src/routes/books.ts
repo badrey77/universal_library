@@ -52,6 +52,46 @@ router.get("/:id", async (req, res) => {
   });
 });
 
+// Public aggregate stats only -- how popular the book is, not who borrowed
+// it (that's staff-only, see /:id/history/detail below).
+router.get("/:id/history", async (req, res) => {
+  const book = await prisma.book.findUnique({ where: { id: req.params.id } });
+  if (!book) return res.status(404).json({ error: "Book not found", code: "BOOK_NOT_FOUND" });
+
+  const [totalLoans, currentlyOnLoan] = await Promise.all([
+    prisma.loan.count({ where: { copy: { bookId: book.id } } }),
+    prisma.loan.count({ where: { copy: { bookId: book.id }, returnedAt: null } }),
+  ]);
+
+  res.json({ totalLoans, currentlyOnLoan });
+});
+
+// Staff-only detail: who borrowed which copy and when. Other members'
+// borrowing activity is private, so this is gated behind requireRole("STAFF").
+router.get("/:id/history/detail", requireAuth, requireRole("STAFF"), async (req, res) => {
+  const book = await prisma.book.findUnique({ where: { id: req.params.id } });
+  if (!book) return res.status(404).json({ error: "Book not found", code: "BOOK_NOT_FOUND" });
+
+  const loans = await prisma.loan.findMany({
+    where: { copy: { bookId: book.id } },
+    include: { copy: true, member: true },
+    orderBy: { checkedOutAt: "desc" },
+    take: 100,
+  });
+
+  res.json(
+    loans.map((loan) => ({
+      loanId: loan.id,
+      memberName: loan.member.name,
+      memberEmail: loan.member.email,
+      copyBarcode: loan.copy.barcode,
+      checkedOutAt: loan.checkedOutAt,
+      returnedAt: loan.returnedAt,
+      renewalCount: loan.renewalCount,
+    }))
+  );
+});
+
 const createBookSchema = z.object({
   isbn: z.string().min(1),
   title: z.string().min(1),

@@ -39,6 +39,23 @@
       "ON_HOLD": "محجوزة",
       "LOST": "مفقودة",
       "REPAIR": "قيد الإصلاح"
+    },
+    "history": {
+      "heading": "سجل الإعارة",
+      "borrowedCount_zero": "لم يُعار من قبل",
+      "borrowedCount_one": "استُعير مرة واحدة",
+      "borrowedCount_two": "استُعير مرتين",
+      "borrowedCount_few": "استُعير {{count}} مرات",
+      "borrowedCount_many": "استُعير {{count}} مرة",
+      "borrowedCount_other": "استُعير {{count}} مرة",
+      "currentlyOnLoan": "قيد الإعارة حالياً: {{count}}",
+      "neverBorrowed": "لم يُعار بعد",
+      "detailHeading": "تفاصيل الإعارة (للموظفين فقط)",
+      "columnMember": "العضو",
+      "columnCheckedOut": "تاريخ الإعارة",
+      "columnReturned": "تاريخ الإرجاع",
+      "columnRenewals": "التجديدات",
+      "stillOnLoan": "لا تزال معارة"
     }
   },
   "loans": {

@@ -39,6 +39,19 @@
       "ON_HOLD": "On hold",
       "LOST": "Lost",
       "REPAIR": "In repair"
+    },
+    "history": {
+      "heading": "Borrowing history",
+      "borrowedCount": "Borrowed {{count}} time",
+      "borrowedCount_other": "Borrowed {{count}} times",
+      "currentlyOnLoan": "Currently on loan: {{count}}",
+      "neverBorrowed": "Never borrowed yet",
+      "detailHeading": "Loan details (staff only)",
+      "columnMember": "Member",
+      "columnCheckedOut": "Checked out",
+      "columnReturned": "Returned",
+      "columnRenewals": "Renewals",
+      "stillOnLoan": "Still on loan"
     }
   },
   "loans": {

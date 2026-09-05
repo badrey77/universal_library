@@ -39,6 +39,18 @@
       "ON_HOLD": "Réservé",
       "LOST": "Perdu",
       "REPAIR": "En réparation"
+    },
+    "history": {
+      "heading": "Historique des emprunts",
+      "borrowedCount": "Emprunté {{count}} fois",
+      "currentlyOnLoan": "Actuellement emprunté : {{count}}",
+      "neverBorrowed": "Jamais emprunté",
+      "detailHeading": "Détail des emprunts (réservé au personnel)",
+      "columnMember": "Membre",
+      "columnCheckedOut": "Emprunté le",
+      "columnReturned": "Rendu le",
+      "columnRenewals": "Renouvellements",
+      "stillOnLoan": "Toujours emprunté"
     }
   },
   "loans": {

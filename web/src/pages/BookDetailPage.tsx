@@ -3,17 +3,21 @@ import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
 import { api } from "../api/client";
 import { translateApiError } from "../api/errorMessages";
-import type { BookDetail } from "../api/types";
+import type { BookDetail, BookHistory, BookHistoryDetailEntry } from "../api/types";
 import { useAuth } from "../context/AuthContext";
 
 export function BookDetailPage() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { id } = useParams<{ id: string }>();
   const { member } = useAuth();
   const [book, setBook] = useState<BookDetail | null>(null);
   const [loadError, setLoadError] = useState(false);
   const [holdMessage, setHoldMessage] = useState<string | null>(null);
   const [holdError, setHoldError] = useState<string | null>(null);
+  const [history, setHistory] = useState<BookHistory | null>(null);
+  const [historyError, setHistoryError] = useState(false);
+  const [historyDetail, setHistoryDetail] = useState<BookHistoryDetailEntry[] | null>(null);
+  const [historyDetailError, setHistoryDetailError] = useState(false);
 
   useEffect(() => {
     if (!id) return;
@@ -23,6 +27,28 @@ export function BookDetailPage() {
       .then(setBook)
       .catch(() => setLoadError(true));
   }, [id]);
+
+  useEffect(() => {
+    if (!id) return;
+    setHistoryError(false);
+    api
+      .get<BookHistory>(`/books/${id}/history`)
+      .then(setHistory)
+      .catch(() => setHistoryError(true));
+  }, [id]);
+
+  useEffect(() => {
+    if (!id || member?.role !== "STAFF") return;
+    setHistoryDetailError(false);
+    api
+      .get<BookHistoryDetailEntry[]>(`/books/${id}/history/detail`)
+      .then(setHistoryDetail)
+      .catch(() => setHistoryDetailError(true));
+  }, [id, member?.role]);
+
+  function formatDate(iso: string) {
+    return new Date(iso).toLocaleDateString(i18n.language);
+  }
 
   async function placeHold() {
     if (!id) return;
@@ -64,6 +90,58 @@ export function BookDetailPage() {
           </button>
           {holdMessage && <p className="success-text">{holdMessage}</p>}
           {holdError && <p className="error-text">{holdError}</p>}
+        </>
+      )}
+
+      <h2 className="section-heading">{t("catalog.history.heading")}</h2>
+      {historyError && <p className="error-text">{t("common.error")}</p>}
+      {!historyError && !history && <p className="muted">{t("common.loading")}</p>}
+      {history &&
+        (history.totalLoans === 0 ? (
+          <p className="muted">{t("catalog.history.neverBorrowed")}</p>
+        ) : (
+          <>
+            <p>{t("catalog.history.borrowedCount", { count: history.totalLoans })}</p>
+            <p>{t("catalog.history.currentlyOnLoan", { count: history.currentlyOnLoan })}</p>
+          </>
+        ))}
+
+      {member?.role === "STAFF" && (
+        <>
+          <h2 className="section-heading">{t("catalog.history.detailHeading")}</h2>
+          {historyDetailError && <p className="error-text">{t("common.error")}</p>}
+          {!historyDetailError && !historyDetail && <p className="muted">{t("common.loading")}</p>}
+          {historyDetail && historyDetail.length === 0 && (
+            <p className="muted">{t("catalog.history.neverBorrowed")}</p>
+          )}
+          {historyDetail && historyDetail.length > 0 && (
+            <table>
+              <thead>
+                <tr>
+                  <th>{t("catalog.history.columnMember")}</th>
+                  <th>{t("catalog.history.columnCheckedOut")}</th>
+                  <th>{t("catalog.history.columnReturned")}</th>
+                  <th>{t("catalog.history.columnRenewals")}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {historyDetail.map((entry) => (
+                  <tr key={entry.loanId}>
+                    <td>
+                      {entry.memberName} <span className="muted">({entry.memberEmail})</span>
+                    </td>
+                    <td>{formatDate(entry.checkedOutAt)}</td>
+                    <td>
+                      {entry.returnedAt
+                        ? formatDate(entry.returnedAt)
+                        : t("catalog.history.stillOnLoan")}
+                    </td>
+                    <td>{entry.renewalCount}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
         </>
       )}
     </div>
