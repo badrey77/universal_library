@@ -7,6 +7,9 @@ import { LoginPage } from "./pages/LoginPage";
 import { RegisterPage } from "./pages/RegisterPage";
 import { MyLoansPage } from "./pages/MyLoansPage";
 import { StaffDeskPage } from "./pages/StaffDeskPage";
+import { BorrowersPage } from "./pages/BorrowersPage";
+import { AddBorrowerPage } from "./pages/AddBorrowerPage";
+import { BorrowerDetailPage } from "./pages/BorrowerDetailPage";
 
 export function App() {
   return (
@@ -31,6 +34,30 @@ export function App() {
             element={
               <RequireAuth role="STAFF">
                 <StaffDeskPage />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/borrowers"
+            element={
+              <RequireAuth role="STAFF">
+                <BorrowersPage />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/borrowers/new"
+            element={
+              <RequireAuth role="STAFF">
+                <AddBorrowerPage />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/borrowers/:id"
+            element={
+              <RequireAuth role="STAFF">
+                <BorrowerDetailPage />
               </RequireAuth>
             }
           />

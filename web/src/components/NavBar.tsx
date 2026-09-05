@@ -18,6 +18,7 @@ export function NavBar() {
         </NavLink>
         {member && <NavLink to="/loans">{t("nav.myLoans")}</NavLink>}
         {member?.role === "STAFF" && <NavLink to="/desk">{t("nav.staffDesk")}</NavLink>}
+        {member?.role === "STAFF" && <NavLink to="/borrowers">{t("nav.borrowers")}</NavLink>}
         {member ? (
           <button type="button" className="link" onClick={logout}>
             {t("nav.logout")} ({member.name})
