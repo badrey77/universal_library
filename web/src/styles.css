@@ -168,7 +168,8 @@ h1 {
 .pill.status-LOST,
 .pill.status-REPAIR { background: #e5e5e5; color: #555; }
 
-button.primary {
+button.primary,
+a.primary {
   background: var(--color-primary);
   color: var(--color-primary-contrast);
   border: none;
@@ -176,6 +177,12 @@ button.primary {
   padding: 0.55rem 1rem;
   font-size: 0.95rem;
   cursor: pointer;
+}
+
+a.primary {
+  display: inline-block;
+  text-decoration: none;
+  white-space: nowrap;
 }
 
 button.primary:disabled {
@@ -265,6 +272,20 @@ form.stack input {
   .desk-grid {
     grid-template-columns: 1fr;
   }
+}
+
+.toolbar-row {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-block-end: 1.25rem;
+}
+
+.toolbar-row .search-input {
+  flex: 1;
+  min-width: 200px;
+  margin-block-end: 0;
 }
 
 .section-heading {

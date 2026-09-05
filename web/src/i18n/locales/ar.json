@@ -6,6 +6,7 @@
     "catalog": "الفهرس",
     "myLoans": "إعاراتي",
     "staffDesk": "مكتب الموظفين",
+    "borrowers": "المستعيرون",
     "login": "تسجيل الدخول",
     "logout": "تسجيل الخروج",
     "register": "إنشاء حساب"
@@ -90,6 +91,22 @@
     "return": "إرجاع",
     "success": "تم بنجاح",
     "copyReserved": "هذه النسخة محجوزة الآن للعضو {{memberId}}"
+  },
+  "borrowers": {
+    "title": "المستعيرون",
+    "searchPlaceholder": "البحث بالاسم أو البريد الإلكتروني",
+    "noResults": "لا يوجد مستعيرون مطابقون",
+    "addBorrower": "إضافة مستعير",
+    "addTitle": "إضافة مستعير جديد",
+    "borrowLimitOverride": "حد الإعارة المخصص (اختياري)",
+    "borrowLimitHint": "اتركه فارغاً لاستخدام الحد الافتراضي",
+    "createSubmit": "إنشاء المستعير",
+    "detailTitle": "ملف المستعير",
+    "borrowLimit": "حد الإعارة",
+    "activeLoanCount": "الإعارات الحالية",
+    "loansHeading": "الإعارات",
+    "holdsHeading": "الحجوزات",
+    "backToList": "العودة إلى قائمة المستعيرين"
   },
   "common": {
     "loading": "جارٍ التحميل…",
