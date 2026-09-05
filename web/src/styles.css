@@ -310,11 +310,19 @@ form.stack label {
   color: var(--color-muted);
 }
 
-form.stack input {
+form.stack input,
+form.stack textarea {
   padding: 0.55rem 0.7rem;
   border: 1px solid var(--color-border);
   border-radius: 8px;
   font-size: 1rem;
+  font-family: inherit;
+  background: var(--color-surface);
+  color: var(--color-text);
+}
+
+form.stack textarea {
+  resize: vertical;
 }
 
 .error-text {
@@ -351,6 +359,24 @@ form.stack input {
   flex: 1;
   min-width: 200px;
   margin-block-end: 0;
+}
+
+.view-mode-picker {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  color: var(--color-muted);
+  margin-block-end: 1.25rem;
+}
+
+.view-mode-picker select {
+  padding: 0.4rem 0.6rem;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  font-size: 0.9rem;
+  background: var(--color-surface);
+  color: var(--color-text);
 }
 
 .section-heading {

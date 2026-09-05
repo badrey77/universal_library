@@ -36,6 +36,15 @@
     "byAuthor": "par {{author}}",
     "category": "Catégorie",
     "theme": "Thème",
+    "uncategorized": "Sans catégorie",
+    "noTheme": "Sans thème",
+    "viewMode": {
+      "label": "Affichage",
+      "all": "Tous",
+      "newest": "Plus récents",
+      "byCategory": "Par catégorie",
+      "byTheme": "Par thème"
+    },
     "copyStatus": {
       "AVAILABLE": "Disponible",
       "ON_LOAN": "Emprunté",
@@ -105,12 +114,24 @@
     "holdsHeading": "Réservations",
     "backToList": "Retour à la liste des adhérents"
   },
+  "addBook": {
+    "title": "Ajouter un livre",
+    "isbn": "ISBN",
+    "bookTitle": "Titre",
+    "author": "Auteur",
+    "description": "Description",
+    "category": "Catégorie",
+    "theme": "Thème",
+    "initialCopies": "Exemplaires initiaux",
+    "submit": "Ajouter le livre"
+  },
   "common": {
     "loading": "Chargement…",
     "error": "Une erreur est survenue.",
     "cancel": "Annuler"
   },
   "errors": {
+    "ISBN_TAKEN": "Cet ISBN figure déjà dans le catalogue.",
     "COPY_NOT_FOUND": "Aucun exemplaire trouvé avec ce code-barres.",
     "MEMBER_NOT_FOUND": "Aucun membre trouvé avec cet identifiant.",
     "COPY_RESERVED_FOR_HOLD": "Cet exemplaire est réservé pour la réservation d'un autre membre.",

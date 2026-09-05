@@ -31,6 +31,7 @@ router.get("/", async (req, res) => {
       description: b.description,
       category: b.category,
       theme: b.theme,
+      createdAt: b.createdAt,
       totalCopies: b.copies.length,
       availableCopies: b.copies.filter((c) => c.status === "AVAILABLE").length,
     }))
@@ -52,6 +53,7 @@ router.get("/:id", async (req, res) => {
     description: book.description,
     category: book.category,
     theme: book.theme,
+    createdAt: book.createdAt,
     copies: book.copies.map((c) => ({ id: c.id, barcode: c.barcode, status: c.status })),
   });
 });

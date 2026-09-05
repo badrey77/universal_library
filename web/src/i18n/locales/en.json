@@ -36,6 +36,15 @@
     "byAuthor": "by {{author}}",
     "category": "Category",
     "theme": "Theme",
+    "uncategorized": "Uncategorized",
+    "noTheme": "No theme",
+    "viewMode": {
+      "label": "View",
+      "all": "All",
+      "newest": "Newest first",
+      "byCategory": "By category",
+      "byTheme": "By theme"
+    },
     "copyStatus": {
       "AVAILABLE": "Available",
       "ON_LOAN": "On loan",
@@ -106,12 +115,24 @@
     "holdsHeading": "Holds",
     "backToList": "Back to borrowers"
   },
+  "addBook": {
+    "title": "Add a book",
+    "isbn": "ISBN",
+    "bookTitle": "Title",
+    "author": "Author",
+    "description": "Description",
+    "category": "Category",
+    "theme": "Theme",
+    "initialCopies": "Initial copies",
+    "submit": "Add book"
+  },
   "common": {
     "loading": "Loading…",
     "error": "Something went wrong.",
     "cancel": "Cancel"
   },
   "errors": {
+    "ISBN_TAKEN": "That ISBN is already in the catalog.",
     "COPY_NOT_FOUND": "No copy found with that barcode.",
     "MEMBER_NOT_FOUND": "No member found with that ID.",
     "COPY_RESERVED_FOR_HOLD": "This copy is reserved for another member's hold.",

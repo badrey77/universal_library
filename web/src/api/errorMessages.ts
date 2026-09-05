@@ -25,6 +25,7 @@ const CODE_TO_KEY: Record<string, string> = {
   HOLD_ALREADY_FULFILLED: "errors.HOLD_ALREADY_FULFILLED",
   VALIDATION_ERROR: "errors.VALIDATION_ERROR",
   RATE_LIMITED: "errors.RATE_LIMITED",
+  ISBN_TAKEN: "errors.ISBN_TAKEN",
 };
 
 export function translateApiError(t: TFunction, err: unknown): string {

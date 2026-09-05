@@ -36,6 +36,15 @@
     "byAuthor": "بقلم {{author}}",
     "category": "التصنيف",
     "theme": "الموضوع",
+    "uncategorized": "بلا تصنيف",
+    "noTheme": "بلا موضوع",
+    "viewMode": {
+      "label": "طريقة العرض",
+      "all": "الكل",
+      "newest": "الأحدث أولاً",
+      "byCategory": "حسب التصنيف",
+      "byTheme": "حسب الموضوع"
+    },
     "copyStatus": {
       "AVAILABLE": "متاحة",
       "ON_LOAN": "معارة",
@@ -110,12 +119,24 @@
     "holdsHeading": "الحجوزات",
     "backToList": "العودة إلى قائمة المستعيرين"
   },
+  "addBook": {
+    "title": "إضافة كتاب",
+    "isbn": "الرقم الدولي (ISBN)",
+    "bookTitle": "العنوان",
+    "author": "المؤلف",
+    "description": "الوصف",
+    "category": "التصنيف",
+    "theme": "الموضوع",
+    "initialCopies": "عدد النسخ الأولي",
+    "submit": "إضافة الكتاب"
+  },
   "common": {
     "loading": "جارٍ التحميل…",
     "error": "حدث خطأ ما.",
     "cancel": "إلغاء"
   },
   "errors": {
+    "ISBN_TAKEN": "هذا الرقم الدولي (ISBN) موجود بالفعل في الفهرس.",
     "COPY_NOT_FOUND": "لم يتم العثور على نسخة بهذا الرمز الشريطي.",
     "MEMBER_NOT_FOUND": "لم يتم العثور على عضو بهذا المعرّف.",
     "COPY_RESERVED_FOR_HOLD": "هذه النسخة محجوزة لعضو آخر.",

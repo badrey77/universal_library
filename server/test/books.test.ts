@@ -38,7 +38,7 @@ function tokenFor(member: { id: string; role: string; email: string; tokenVersio
 }
 
 describe("GET /api/books", () => {
-  it("includes category and theme in the summary shape", async () => {
+  it("includes category, theme, and createdAt in the summary shape", async () => {
     const book = await createBook({ category: "Fiction", theme: "War and homecoming" });
 
     const res = await request(app).get("/api/books").query({ q: book.isbn });
@@ -47,6 +47,8 @@ describe("GET /api/books", () => {
     expect(found).toBeDefined();
     expect(found.category).toBe("Fiction");
     expect(found.theme).toBe("War and homecoming");
+    expect(typeof found.createdAt).toBe("string");
+    expect(new Date(found.createdAt).toString()).not.toBe("Invalid Date");
   });
 
   it("returns null category/theme when not set", async () => {
@@ -62,13 +64,14 @@ describe("GET /api/books", () => {
 });
 
 describe("GET /api/books/:id", () => {
-  it("includes category and theme in the detail shape", async () => {
+  it("includes category, theme, and createdAt in the detail shape", async () => {
     const book = await createBook({ category: "Poetry", theme: "Loss and memory" });
 
     const res = await request(app).get(`/api/books/${book.id}`);
     expect(res.status).toBe(200);
     expect(res.body.category).toBe("Poetry");
     expect(res.body.theme).toBe("Loss and memory");
+    expect(typeof res.body.createdAt).toBe("string");
   });
 
   it("returns null category/theme when not set", async () => {
@@ -78,6 +81,12 @@ describe("GET /api/books/:id", () => {
     expect(res.status).toBe(200);
     expect(res.body.category).toBeNull();
     expect(res.body.theme).toBeNull();
+  });
+
+  it("returns 404 BOOK_NOT_FOUND for a nonexistent book id", async () => {
+    const res = await request(app).get(`/api/books/nonexistent-${randomUUID()}`);
+    expect(res.status).toBe(404);
+    expect(res.body.code).toBe("BOOK_NOT_FOUND");
   });
 });
 
@@ -128,5 +137,49 @@ describe("POST /api/books", () => {
     const stored = await prisma.book.findUnique({ where: { isbn } });
     expect(stored?.category).toBeNull();
     expect(stored?.theme).toBeNull();
+  });
+
+  it("returns 401 with no auth", async () => {
+    const res = await request(app)
+      .post("/api/books")
+      .send({ isbn: `isbn-${randomUUID()}`, title: "T", author: "A" });
+    expect(res.status).toBe(401);
+  });
+
+  it("returns 403 for a PATRON token", async () => {
+    const patron = await createMember({ role: "PATRON" });
+    const res = await request(app)
+      .post("/api/books")
+      .set("Authorization", `Bearer ${tokenFor(patron)}`)
+      .send({ isbn: `isbn-${randomUUID()}`, title: "T", author: "A" });
+    expect(res.status).toBe(403);
+  });
+
+  it("returns 409 ISBN_TAKEN when the isbn already exists", async () => {
+    const staff = await createMember({ role: "STAFF" });
+    const isbn = `isbn-${randomUUID()}`;
+
+    const first = await request(app)
+      .post("/api/books")
+      .set("Authorization", `Bearer ${tokenFor(staff)}`)
+      .send({ isbn, title: "First", author: "Author" });
+    expect(first.status).toBe(201);
+
+    const dupe = await request(app)
+      .post("/api/books")
+      .set("Authorization", `Bearer ${tokenFor(staff)}`)
+      .send({ isbn, title: "Second", author: "Author" });
+    expect(dupe.status).toBe(409);
+    expect(dupe.body.code).toBe("ISBN_TAKEN");
+  });
+
+  it("returns 400 VALIDATION_ERROR when required fields are missing", async () => {
+    const staff = await createMember({ role: "STAFF" });
+    const res = await request(app)
+      .post("/api/books")
+      .set("Authorization", `Bearer ${tokenFor(staff)}`)
+      .send({ isbn: `isbn-${randomUUID()}` });
+    expect(res.status).toBe(400);
+    expect(res.body.code).toBe("VALIDATION_ERROR");
   });
 });

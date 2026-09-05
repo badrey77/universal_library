@@ -10,6 +10,7 @@ import { StaffDeskPage } from "./pages/StaffDeskPage";
 import { BorrowersPage } from "./pages/BorrowersPage";
 import { AddBorrowerPage } from "./pages/AddBorrowerPage";
 import { BorrowerDetailPage } from "./pages/BorrowerDetailPage";
+import { AddBookPage } from "./pages/AddBookPage";
 
 export function App() {
   return (
@@ -18,6 +19,14 @@ export function App() {
       <main className="app-main">
         <Routes>
           <Route path="/" element={<CatalogPage />} />
+          <Route
+            path="/books/new"
+            element={
+              <RequireAuth role="STAFF">
+                <AddBookPage />
+              </RequireAuth>
+            }
+          />
           <Route path="/books/:id" element={<BookDetailPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />

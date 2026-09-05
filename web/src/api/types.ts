@@ -22,6 +22,7 @@ export interface BookSummary {
   description: string | null;
   category: string | null;
   theme: string | null;
+  createdAt: string;
   totalCopies: number;
   availableCopies: number;
 }
