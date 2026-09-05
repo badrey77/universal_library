@@ -11,6 +11,7 @@ import { BorrowersPage } from "./pages/BorrowersPage";
 import { AddBorrowerPage } from "./pages/AddBorrowerPage";
 import { BorrowerDetailPage } from "./pages/BorrowerDetailPage";
 import { AddBookPage } from "./pages/AddBookPage";
+import { SettingsPage } from "./pages/SettingsPage";
 
 export function App() {
   return (
@@ -67,6 +68,14 @@ export function App() {
             element={
               <RequireAuth role="STAFF">
                 <BorrowerDetailPage />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/settings"
+            element={
+              <RequireAuth role="STAFF">
+                <SettingsPage />
               </RequireAuth>
             }
           />
