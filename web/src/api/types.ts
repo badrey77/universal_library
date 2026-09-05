@@ -70,6 +70,13 @@ export interface BookHistoryDetailEntry {
   renewalCount: number;
 }
 
+export interface Settings {
+  loanPeriodDays: number;
+  maxRenewals: number;
+  holdReadyDays: number;
+  defaultBorrowLimit: number;
+}
+
 export interface Hold {
   id: string;
   requestedAt: string;

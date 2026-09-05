@@ -1,5 +1,6 @@
 import { Prisma } from "@prisma/client";
-import { HOLD_READY_DAYS, addDays } from "./policy";
+import { addDays } from "./policy";
+import { getSettings } from "./settings";
 
 // Claims the oldest waiting hold for a book onto a specific copy via CAS,
 // retrying against the next hold in line if a concurrent process already
@@ -11,6 +12,7 @@ export async function assignNextHoldOrRelease(
   bookId: string
 ): Promise<{ copyStatus: "ON_HOLD" | "AVAILABLE"; reservedForMemberId: string | null }> {
   const triedHoldIds: string[] = [];
+  const settings = await getSettings(tx);
 
   for (let attempt = 0; attempt < 5; attempt++) {
     const candidate = await tx.hold.findFirst({
@@ -24,7 +26,7 @@ export async function assignNextHoldOrRelease(
       data: {
         status: "READY",
         copyId,
-        expiresAt: addDays(new Date(), HOLD_READY_DAYS),
+        expiresAt: addDays(new Date(), settings.holdReadyDays),
       },
     });
     if (claim.count === 1) {

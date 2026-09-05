@@ -125,6 +125,15 @@
     "initialCopies": "Exemplaires initiaux",
     "submit": "Ajouter le livre"
   },
+  "settings": {
+    "title": "Paramètres de la bibliothèque",
+    "loanPeriodDays": "Durée du prêt (jours)",
+    "maxRenewals": "Nombre maximal de renouvellements",
+    "holdReadyDays": "Délai de retrait des réservations (jours)",
+    "defaultBorrowLimit": "Limite d'emprunts par défaut",
+    "save": "Enregistrer les paramètres",
+    "saved": "Paramètres enregistrés."
+  },
   "common": {
     "loading": "Chargement…",
     "error": "Une erreur est survenue.",

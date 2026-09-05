@@ -4,6 +4,20 @@ import bcrypt from "bcryptjs";
 const prisma = new PrismaClient();
 
 async function main() {
+  // Belt-and-suspenders with getSettings()'s own lazy-create: a freshly
+  // seeded database gets its policy singleton from the start.
+  await prisma.setting.upsert({
+    where: { id: "global" },
+    update: {},
+    create: {
+      id: "global",
+      loanPeriodDays: 14,
+      maxRenewals: 2,
+      holdReadyDays: 3,
+      defaultBorrowLimit: 5,
+    },
+  });
+
   const staffPassword = await bcrypt.hash("staff123", 10);
   const patronPassword = await bcrypt.hash("patron123", 10);
 

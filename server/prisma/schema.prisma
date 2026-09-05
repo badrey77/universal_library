@@ -79,6 +79,17 @@ model Loan {
   @@index([copyId, returnedAt])
 }
 
+// Singleton row (fixed id "global") holding library-wide policy settings
+// that used to be hardcoded constants in src/lib/policy.ts.
+model Setting {
+  id                 String   @id @default("global")
+  loanPeriodDays     Int      @default(14)
+  maxRenewals        Int      @default(2)
+  holdReadyDays      Int      @default(3)
+  defaultBorrowLimit Int      @default(5)
+  updatedAt          DateTime @updatedAt
+}
+
 model Hold {
   id          String    @id @default(cuid())
   requestedAt DateTime  @default(now())

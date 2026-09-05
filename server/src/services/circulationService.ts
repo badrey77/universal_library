@@ -1,7 +1,8 @@
 import { prisma } from "../lib/prisma";
 import { HttpError } from "../lib/httpError";
 import { assignNextHoldOrRelease } from "../lib/holdAssignment";
-import { LOAN_PERIOD_DAYS, MAX_RENEWALS, addDays } from "../lib/policy";
+import { addDays } from "../lib/policy";
+import { getSettings } from "../lib/settings";
 
 // Staff scans a copy's barcode out to a member. Transactional so two staff
 // desks can never check the same physical copy out twice.
@@ -65,11 +66,13 @@ export async function checkoutCopy(barcode: string, memberId: string) {
       });
     }
 
+    const settings = await getSettings(tx);
+
     return tx.loan.create({
       data: {
         copyId: copy.id,
         memberId,
-        dueAt: addDays(new Date(), LOAN_PERIOD_DAYS),
+        dueAt: addDays(new Date(), settings.loanPeriodDays),
       },
       include: { copy: { include: { book: true } } },
     });
@@ -111,7 +114,8 @@ export async function renewLoan(loanId: string, requester: { id: string; role: s
     if (!isOwner && requester.role !== "STAFF") {
       throw new HttpError(403, "FORBIDDEN", "Forbidden");
     }
-    if (loan.renewalCount >= MAX_RENEWALS) {
+    const settings = await getSettings(tx);
+    if (loan.renewalCount >= settings.maxRenewals) {
       throw new HttpError(409, "RENEWAL_LIMIT_REACHED", "Renewal limit reached");
     }
 
@@ -129,7 +133,7 @@ export async function renewLoan(loanId: string, requester: { id: string; role: s
     return tx.loan.update({
       where: { id: loan.id },
       data: {
-        dueAt: addDays(new Date(), LOAN_PERIOD_DAYS),
+        dueAt: addDays(new Date(), settings.loanPeriodDays),
         renewalCount: { increment: 1 },
       },
     });
