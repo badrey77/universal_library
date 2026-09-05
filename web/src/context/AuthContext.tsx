@@ -7,7 +7,6 @@ interface AuthContextValue {
   token: string | null;
   loading: boolean;
   login: (email: string, password: string) => Promise<void>;
-  register: (name: string, email: string, password: string) => Promise<void>;
   logout: () => void;
 }
 
@@ -65,16 +64,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setMember(res.member);
   }, []);
 
-  const register = useCallback(async (name: string, email: string, password: string) => {
-    const res = await api.post<{ token: string; member: Member }>("/auth/register", {
-      name,
-      email,
-      password,
-    });
-    setToken(res.token);
-    setMember(res.member);
-  }, []);
-
   const logout = useCallback(() => {
     // Best-effort: revokes the token server-side via tokenVersion so it
     // can't be replayed even if it leaked. Still clear local state even if
@@ -85,8 +74,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const value = useMemo(
-    () => ({ member, token, loading, login, register, logout }),
-    [member, token, loading, login, register, logout]
+    () => ({ member, token, loading, login, logout }),
+    [member, token, loading, login, logout]
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

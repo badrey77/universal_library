@@ -4,47 +4,20 @@ import rateLimit from "express-rate-limit";
 import { z } from "zod";
 import { prisma } from "../lib/prisma";
 import { AuthUser, requireAuth, signToken } from "../middleware/auth";
-import { getSettings } from "../lib/settings";
 
 const router = Router();
 
-// Credential-stuffing / brute-force guard: generous enough for a genuine
-// user mistyping their password a few times, tight enough to make guessing
-// impractical. Keyed by IP, which is what express-rate-limit does by default.
+// Credential-stuffing / brute-force guard on login: generous enough for a
+// genuine user mistyping their password a few times, tight enough to make
+// guessing impractical. Keyed by IP, which is what express-rate-limit does
+// by default. There is no self-registration endpoint -- patron accounts are
+// created by staff via POST /api/members, so this only guards login.
 const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   limit: 10,
   standardHeaders: true,
   legacyHeaders: false,
   message: { error: "Too many attempts, please try again later.", code: "RATE_LIMITED" },
-});
-
-const registerSchema = z.object({
-  name: z.string().min(1),
-  email: z.string().email(),
-  password: z.string().min(10),
-});
-
-router.post("/register", authLimiter, async (req, res) => {
-  const parsed = registerSchema.safeParse(req.body);
-  if (!parsed.success) {
-    return res.status(400).json({ error: parsed.error.flatten(), code: "VALIDATION_ERROR" });
-  }
-  const { name, email, password } = parsed.data;
-
-  const existing = await prisma.member.findUnique({ where: { email } });
-  if (existing) {
-    return res.status(409).json({ error: "Email already registered", code: "EMAIL_TAKEN" });
-  }
-
-  const passwordHash = await bcrypt.hash(password, 12);
-  const { defaultBorrowLimit } = await getSettings();
-  const member = await prisma.member.create({
-    data: { name, email, passwordHash, role: "PATRON", borrowLimit: defaultBorrowLimit },
-  });
-
-  const token = signToken(toAuthUser(member));
-  res.status(201).json({ token, member: toPublicMember(member) });
 });
 
 const loginSchema = z.object({

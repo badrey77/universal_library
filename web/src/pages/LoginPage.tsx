@@ -1,6 +1,6 @@
 import { FormEvent, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { translateApiError } from "../api/errorMessages";
 
@@ -49,9 +49,6 @@ export function LoginPage() {
           {t("auth.loginSubmit")}
         </button>
       </form>
-      <p className="muted">
-        {t("auth.noAccount")} <Link to="/register">{t("nav.register")}</Link>
-      </p>
     </div>
   );
 }

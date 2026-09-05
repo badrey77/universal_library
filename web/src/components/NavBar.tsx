@@ -16,7 +16,6 @@ export function NavBar() {
         <NavLink to="/" end>
           {t("nav.catalog")}
         </NavLink>
-        {member && <NavLink to="/loans">{t("nav.myLoans")}</NavLink>}
         {member?.role === "STAFF" && <NavLink to="/desk">{t("nav.staffDesk")}</NavLink>}
         {member?.role === "STAFF" && <NavLink to="/borrowers">{t("nav.borrowers")}</NavLink>}
         {member?.role === "STAFF" && <NavLink to="/settings">{t("nav.settings")}</NavLink>}
@@ -25,10 +24,7 @@ export function NavBar() {
             {t("nav.logout")} ({member.name})
           </button>
         ) : (
-          <>
-            <NavLink to="/login">{t("nav.login")}</NavLink>
-            <NavLink to="/register">{t("nav.register")}</NavLink>
-          </>
+          <NavLink to="/login">{t("nav.login")}</NavLink>
         )}
         <LanguageSwitcher />
       </nav>

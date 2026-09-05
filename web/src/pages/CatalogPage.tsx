@@ -2,7 +2,6 @@ import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { api } from "../api/client";
-import { translateApiError } from "../api/errorMessages";
 import { useAuth } from "../context/AuthContext";
 import type { BookSummary } from "../api/types";
 
@@ -19,7 +18,6 @@ function snippet(text: string, maxLength = 110): string {
   return `${text.slice(0, maxLength).trimEnd()}…`;
 }
 
-type HoldState = { status: "loading" | "placed" | "error"; message?: string };
 type ViewMode = "all" | "newest" | "category" | "theme";
 
 export function CatalogPage() {
@@ -28,7 +26,6 @@ export function CatalogPage() {
   const [query, setQuery] = useState("");
   const [books, setBooks] = useState<BookSummary[] | null>(null);
   const [error, setError] = useState(false);
-  const [holdState, setHoldState] = useState<Record<string, HoldState>>({});
   const [viewMode, setViewMode] = useState<ViewMode>("all");
 
   useEffect(() => {
@@ -84,24 +81,7 @@ export function CatalogPage() {
     return [{ heading: null as string | null, books }];
   }, [books, viewMode, t]);
 
-  async function placeHold(bookId: string) {
-    setHoldState((prev) => ({ ...prev, [bookId]: { status: "loading" } }));
-    try {
-      await api.post("/holds", { bookId });
-      setHoldState((prev) => ({
-        ...prev,
-        [bookId]: { status: "placed", message: t("catalog.holdPlaced") },
-      }));
-    } catch (err) {
-      setHoldState((prev) => ({
-        ...prev,
-        [bookId]: { status: "error", message: translateApiError(t, err) },
-      }));
-    }
-  }
-
   function renderCard(book: BookSummary) {
-    const hold = holdState[book.id];
     return (
       <div className="card catalog-card" key={book.id}>
         <div className="book-cover" style={{ background: coverColor(book.isbn) }} aria-hidden="true">
@@ -113,23 +93,9 @@ export function CatalogPage() {
           </p>
           <p className="card-meta">{t("catalog.byAuthor", { author: book.author })}</p>
           {book.description && <p className="card-description">{snippet(book.description)}</p>}
-          <div className="catalog-card-actions">
-            <span className={`pill ${book.availableCopies > 0 ? "available" : "unavailable"}`}>
-              {t("catalog.available", { count: book.availableCopies, total: book.totalCopies })}
-            </span>
-            {member?.role === "PATRON" && hold?.status !== "placed" && (
-              <button
-                className="secondary"
-                disabled={hold?.status === "loading"}
-                onClick={() => placeHold(book.id)}
-              >
-                {t("catalog.placeHold")}
-              </button>
-            )}
-          </div>
-          {hold?.message && (
-            <p className={hold.status === "error" ? "error-text" : "success-text"}>{hold.message}</p>
-          )}
+          <span className={`pill ${book.availableCopies > 0 ? "available" : "unavailable"}`}>
+            {t("catalog.available", { count: book.availableCopies, total: book.totalCopies })}
+          </span>
         </div>
       </div>
     );

@@ -4,24 +4,18 @@
   },
   "nav": {
     "catalog": "الفهرس",
-    "myLoans": "إعاراتي",
     "staffDesk": "مكتب الموظفين",
     "borrowers": "المستعيرون",
     "settings": "الإعدادات",
     "login": "تسجيل الدخول",
-    "logout": "تسجيل الخروج",
-    "register": "إنشاء حساب"
+    "logout": "تسجيل الخروج"
   },
   "auth": {
     "email": "البريد الإلكتروني",
     "password": "كلمة المرور",
     "name": "الاسم الكامل",
     "loginTitle": "تسجيل الدخول",
-    "registerTitle": "إنشاء حساب جديد",
     "loginSubmit": "دخول",
-    "registerSubmit": "إنشاء الحساب",
-    "noAccount": "ليس لديك حساب؟",
-    "haveAccount": "لديك حساب بالفعل؟",
     "invalidCredentials": "البريد الإلكتروني أو كلمة المرور غير صحيحة.",
     "emailTaken": "هذا البريد الإلكتروني مسجل بالفعل.",
     "passwordHint": "10 أحرف على الأقل"
@@ -31,9 +25,6 @@
     "searchPlaceholder": "ابحث بالعنوان أو المؤلف أو الرقم الدولي",
     "available": "{{count}} من {{total}} متاح",
     "noResults": "لم يتم العثور على كتب.",
-    "placeHold": "طلب حجز",
-    "holdPlaced": "تم الحجز",
-    "alreadyOnHold": "لديك حجز بالفعل لهذا الكتاب",
     "byAuthor": "بقلم {{author}}",
     "category": "التصنيف",
     "theme": "الموضوع",
@@ -72,15 +63,9 @@
     }
   },
   "loans": {
-    "title": "إعاراتي",
-    "loansHeading": "الإعارات الحالية والسابقة",
-    "holdsHeading": "حجوزاتي",
     "dueOn": "تاريخ الإرجاع {{date}}",
     "returned": "تم الإرجاع في {{date}}",
     "overdue": "متأخر",
-    "renew": "تجديد",
-    "renewed": "تم التجديد حتى {{date}}",
-    "cancelHold": "إلغاء الحجز",
     "holdStatus": {
       "WAITING": "في قائمة الانتظار",
       "READY": "جاهز للاستلام",

@@ -1,13 +1,14 @@
 import crypto from "node:crypto";
+import bcrypt from "bcryptjs";
 import { describe, expect, it } from "vitest";
 import request from "supertest";
 import { app } from "../src/app";
+import { prisma } from "../src/lib/prisma";
 
-// NOTE ON RATE LIMITING: /register and /login share one express-rate-limit
-// instance capped at 10 requests / 15 min per IP (see server/src/routes/auth.ts).
-// Supertest hits the app from a single local address, so this file is careful
-// to keep its total register+login call count comfortably under that ceiling
-// by reusing fixtures across assertions instead of re-registering per test.
+// NOTE ON RATE LIMITING: /login is capped at 10 requests / 15 min per IP
+// (see server/src/routes/auth.ts). Supertest hits the app from a single
+// local address, so this file keeps its total login call count comfortably
+// under that ceiling by reusing fixtures across assertions.
 
 function uniqueEmail(): string {
   return `user-${crypto.randomUUID()}@example.com`;
@@ -15,44 +16,24 @@ function uniqueEmail(): string {
 
 const VALID_PASSWORD = "correct-horse-battery";
 
-async function registerUser(email: string, password: string = VALID_PASSWORD) {
-  return request(app)
-    .post("/api/auth/register")
-    .send({ name: "Test User", email, password });
+// There is no self-registration endpoint -- patron accounts are created by
+// staff (see server/test/members.test.ts for POST /api/members coverage).
+// These tests create a member directly to set up login fixtures.
+async function createPatron(email: string, password: string = VALID_PASSWORD) {
+  const passwordHash = await bcrypt.hash(password, 12);
+  return prisma.member.create({
+    data: { name: "Test User", email, passwordHash, role: "PATRON" },
+  });
 }
 
-describe("POST /api/auth/register", () => {
-  it("registers a new member with valid data, then rejects re-registering the same email", async () => {
-    const email = uniqueEmail();
-
-    const res = await registerUser(email);
-    expect(res.status).toBe(201);
-    expect(typeof res.body.token).toBe("string");
-    expect(res.body.member).toBeTruthy();
-    expect(res.body.member.email).toBe(email);
-
-    const dupe = await registerUser(email);
-    expect(dupe.status).toBe(409);
-    expect(dupe.body.code).toBe("EMAIL_TAKEN");
-  });
-
-  it("rejects a password under 10 characters with VALIDATION_ERROR", async () => {
-    const res = await registerUser(uniqueEmail(), "short1");
-    expect(res.status).toBe(400);
-    expect(res.body.code).toBe("VALIDATION_ERROR");
-  });
-});
-
 describe("POST /api/auth/login and GET /api/auth/me", () => {
-  // Shared fixture for the whole describe block: one register call backs
-  // several assertions below instead of each test registering its own user.
+  // Shared fixture for the whole describe block: one member backs several
+  // assertions below instead of each test creating its own.
   const email = uniqueEmail();
-  let registeredToken: string;
+  let loggedInToken: string;
 
   it("logs in with correct credentials and returns a token (fixture setup)", async () => {
-    const registerRes = await registerUser(email);
-    expect(registerRes.status).toBe(201);
-    registeredToken = registerRes.body.token;
+    await createPatron(email);
 
     const res = await request(app)
       .post("/api/auth/login")
@@ -60,6 +41,7 @@ describe("POST /api/auth/login and GET /api/auth/me", () => {
 
     expect(res.status).toBe(200);
     expect(typeof res.body.token).toBe("string");
+    loggedInToken = res.body.token;
   });
 
   it("rejects a wrong password for a real email with INVALID_CREDENTIALS", async () => {
@@ -100,7 +82,7 @@ describe("POST /api/auth/login and GET /api/auth/me", () => {
   it("GET /me returns the member's data for a valid token", async () => {
     const res = await request(app)
       .get("/api/auth/me")
-      .set("Authorization", `Bearer ${registeredToken}`);
+      .set("Authorization", `Bearer ${loggedInToken}`);
     expect(res.status).toBe(200);
     expect(res.body.email).toBe(email);
   });
@@ -109,8 +91,12 @@ describe("POST /api/auth/login and GET /api/auth/me", () => {
 describe("POST /api/auth/logout", () => {
   it("revokes the token immediately: reusing it afterward returns TOKEN_REVOKED", async () => {
     const email = uniqueEmail();
-    const registerRes = await registerUser(email);
-    const token = registerRes.body.token as string;
+    await createPatron(email);
+
+    const loginRes = await request(app)
+      .post("/api/auth/login")
+      .send({ email, password: VALID_PASSWORD });
+    const token = loginRes.body.token as string;
 
     const logoutRes = await request(app)
       .post("/api/auth/logout")

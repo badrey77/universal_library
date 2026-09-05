@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
 import { api } from "../api/client";
-import { translateApiError } from "../api/errorMessages";
 import type { BookDetail, BookHistory, BookHistoryDetailEntry } from "../api/types";
 import { useAuth } from "../context/AuthContext";
 
@@ -12,8 +11,6 @@ export function BookDetailPage() {
   const { member } = useAuth();
   const [book, setBook] = useState<BookDetail | null>(null);
   const [loadError, setLoadError] = useState(false);
-  const [holdMessage, setHoldMessage] = useState<string | null>(null);
-  const [holdError, setHoldError] = useState<string | null>(null);
   const [history, setHistory] = useState<BookHistory | null>(null);
   const [historyError, setHistoryError] = useState(false);
   const [historyDetail, setHistoryDetail] = useState<BookHistoryDetailEntry[] | null>(null);
@@ -50,18 +47,6 @@ export function BookDetailPage() {
     return new Date(iso).toLocaleDateString(i18n.language);
   }
 
-  async function placeHold() {
-    if (!id) return;
-    setHoldError(null);
-    setHoldMessage(null);
-    try {
-      await api.post("/holds", { bookId: id });
-      setHoldMessage(t("catalog.holdPlaced"));
-    } catch (err) {
-      setHoldError(translateApiError(t, err));
-    }
-  }
-
   if (loadError) return <p className="error-text">{t("common.error")}</p>;
   if (!book) return <p className="muted">{t("common.loading")}</p>;
 
@@ -96,16 +81,6 @@ export function BookDetailPage() {
           </span>
         </div>
       ))}
-
-      {member?.role === "PATRON" && (
-        <>
-          <button className="primary" onClick={placeHold} style={{ marginTop: "1rem" }}>
-            {t("catalog.placeHold")}
-          </button>
-          {holdMessage && <p className="success-text">{holdMessage}</p>}
-          {holdError && <p className="error-text">{holdError}</p>}
-        </>
-      )}
 
       <h2 className="section-heading">{t("catalog.history.heading")}</h2>
       {historyError && <p className="error-text">{t("common.error")}</p>}

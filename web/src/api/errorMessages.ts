@@ -7,7 +7,6 @@ import { ApiError } from "./client";
 const CODE_TO_KEY: Record<string, string> = {
   INVALID_CREDENTIALS: "auth.invalidCredentials",
   EMAIL_TAKEN: "auth.emailTaken",
-  HOLD_ALREADY_EXISTS: "catalog.alreadyOnHold",
   COPY_NOT_FOUND: "errors.COPY_NOT_FOUND",
   MEMBER_NOT_FOUND: "errors.MEMBER_NOT_FOUND",
   COPY_RESERVED_FOR_HOLD: "errors.COPY_RESERVED_FOR_HOLD",

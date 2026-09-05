@@ -4,24 +4,18 @@
   },
   "nav": {
     "catalog": "Catalog",
-    "myLoans": "My Loans",
     "staffDesk": "Staff Desk",
     "borrowers": "Borrowers",
     "settings": "Settings",
     "login": "Log in",
-    "logout": "Log out",
-    "register": "Register"
+    "logout": "Log out"
   },
   "auth": {
     "email": "Email",
     "password": "Password",
     "name": "Full name",
     "loginTitle": "Log in",
-    "registerTitle": "Create an account",
     "loginSubmit": "Log in",
-    "registerSubmit": "Create account",
-    "noAccount": "No account yet?",
-    "haveAccount": "Already have an account?",
     "invalidCredentials": "Invalid email or password.",
     "emailTaken": "That email is already registered.",
     "passwordHint": "At least 10 characters"
@@ -31,9 +25,6 @@
     "searchPlaceholder": "Search by title, author, or ISBN",
     "available": "{{count}} of {{total}} available",
     "noResults": "No books found.",
-    "placeHold": "Place hold",
-    "holdPlaced": "Hold placed",
-    "alreadyOnHold": "You already have a hold on this book",
     "byAuthor": "by {{author}}",
     "category": "Category",
     "theme": "Theme",
@@ -68,15 +59,9 @@
     }
   },
   "loans": {
-    "title": "My Loans",
-    "loansHeading": "Current & past loans",
-    "holdsHeading": "My holds",
     "dueOn": "Due {{date}}",
     "returned": "Returned {{date}}",
     "overdue": "Overdue",
-    "renew": "Renew",
-    "renewed": "Renewed until {{date}}",
-    "cancelHold": "Cancel hold",
     "holdStatus": {
       "WAITING": "Waiting in queue",
       "READY": "Ready for pickup",

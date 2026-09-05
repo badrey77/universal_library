@@ -4,24 +4,18 @@
   },
   "nav": {
     "catalog": "Catalogue",
-    "myLoans": "Mes emprunts",
     "staffDesk": "Guichet du personnel",
     "borrowers": "Adhérents",
     "settings": "Paramètres",
     "login": "Connexion",
-    "logout": "Déconnexion",
-    "register": "S'inscrire"
+    "logout": "Déconnexion"
   },
   "auth": {
     "email": "E-mail",
     "password": "Mot de passe",
     "name": "Nom complet",
     "loginTitle": "Connexion",
-    "registerTitle": "Créer un compte",
     "loginSubmit": "Se connecter",
-    "registerSubmit": "Créer le compte",
-    "noAccount": "Pas encore de compte ?",
-    "haveAccount": "Vous avez déjà un compte ?",
     "invalidCredentials": "E-mail ou mot de passe invalide.",
     "emailTaken": "Cet e-mail est déjà enregistré.",
     "passwordHint": "Au moins 10 caractères"
@@ -31,9 +25,6 @@
     "searchPlaceholder": "Rechercher par titre, auteur ou ISBN",
     "available": "{{count}} sur {{total}} disponible(s)",
     "noResults": "Aucun livre trouvé.",
-    "placeHold": "Réserver",
-    "holdPlaced": "Réservation effectuée",
-    "alreadyOnHold": "Vous avez déjà une réservation pour ce livre",
     "byAuthor": "par {{author}}",
     "category": "Catégorie",
     "theme": "Thème",
@@ -67,15 +58,9 @@
     }
   },
   "loans": {
-    "title": "Mes emprunts",
-    "loansHeading": "Emprunts en cours et passés",
-    "holdsHeading": "Mes réservations",
     "dueOn": "À rendre le {{date}}",
     "returned": "Rendu le {{date}}",
     "overdue": "En retard",
-    "renew": "Renouveler",
-    "renewed": "Renouvelé jusqu'au {{date}}",
-    "cancelHold": "Annuler la réservation",
     "holdStatus": {
       "WAITING": "En attente",
       "READY": "Prêt pour retrait",
