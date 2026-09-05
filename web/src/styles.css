@@ -144,6 +144,44 @@ h1 {
   margin: 0 0 0.5rem;
 }
 
+.catalog-card {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.book-cover {
+  flex: 0 0 auto;
+  inline-size: 52px;
+  block-size: 76px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-weight: 700;
+  font-size: 1.4rem;
+  font-family: Georgia, "Times New Roman", serif;
+}
+
+.catalog-card-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.card-description {
+  color: var(--color-muted);
+  font-size: 0.88rem;
+  margin: 0.3rem 0 0.6rem;
+}
+
+.catalog-card-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
 .pill {
   display: inline-block;
   padding: 0.15rem 0.55rem;
@@ -167,6 +205,28 @@ h1 {
 .pill.status-ON_HOLD { background: #fbeed6; color: #966211; }
 .pill.status-LOST,
 .pill.status-REPAIR { background: #e5e5e5; color: #555; }
+
+.book-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin: 0 0 0.75rem;
+}
+
+.book-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.15rem 0.55rem;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  background: #eef1f7;
+  color: #3b4a63;
+}
+
+.book-tag-label {
+  font-weight: 600;
+}
 
 button.primary {
   background: var(--color-primary);
@@ -221,6 +281,11 @@ button.secondary {
   padding: 0.5rem 0.9rem;
   font-size: 0.9rem;
   cursor: pointer;
+}
+
+button.secondary:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
 }
 
 form.stack {

@@ -16,6 +16,8 @@ export interface BookSummary {
   title: string;
   author: string;
   description: string | null;
+  category: string | null;
+  theme: string | null;
   totalCopies: number;
   availableCopies: number;
 }
@@ -32,6 +34,8 @@ export interface BookDetail {
   title: string;
   author: string;
   description: string | null;
+  category: string | null;
+  theme: string | null;
   copies: Copy[];
 }
 

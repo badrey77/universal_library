@@ -33,6 +33,8 @@
     "holdPlaced": "Hold placed",
     "alreadyOnHold": "You already have a hold on this book",
     "byAuthor": "by {{author}}",
+    "category": "Category",
+    "theme": "Theme",
     "copyStatus": {
       "AVAILABLE": "Available",
       "ON_LOAN": "On loan",

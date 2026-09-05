@@ -37,6 +37,8 @@ async function main() {
       title: "The Odyssey",
       author: "Homer",
       description: "An epic journey home.",
+      category: "Classic Literature",
+      theme: "War and homecoming",
       copies: 2,
     },
     {
@@ -44,6 +46,8 @@ async function main() {
       title: "L'Étranger",
       author: "Albert Camus",
       description: "Un roman existentialiste.",
+      category: "Fiction",
+      theme: "Absurdism and alienation",
       copies: 1,
     },
     {
@@ -51,6 +55,8 @@ async function main() {
       title: "موسم الهجرة إلى الشمال",
       author: "Tayeb Salih",
       description: "رواية عربية كلاسيكية.",
+      category: "Classic Literature",
+      theme: "Colonialism and identity",
       copies: 2,
     },
     {
@@ -58,6 +64,8 @@ async function main() {
       title: "To Kill a Mockingbird",
       author: "Harper Lee",
       description: "A story of justice and growing up.",
+      category: "Historical Fiction",
+      theme: "Justice and moral growth",
       copies: 3,
     },
   ];
@@ -71,6 +79,8 @@ async function main() {
         title: b.title,
         author: b.author,
         description: b.description,
+        category: b.category,
+        theme: b.theme,
       },
     });
 

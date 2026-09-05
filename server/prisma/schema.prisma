@@ -18,6 +18,14 @@ model Book {
   title       String
   author      String
   description String?
+  // Loosely-typed classification, following the same string-union
+  // convention as Copy.status/Hold.status above (no native SQLite enum):
+  // category is a broad classification, e.g. "Fiction", "Non-fiction",
+  // "Poetry", "Classic Literature", "Historical Fiction". theme is the
+  // book's central theme/subject as a short phrase, e.g. "War and
+  // homecoming", "Colonialism and identity".
+  category    String?
+  theme       String?
   createdAt   DateTime @default(now())
 
   copies Copy[]

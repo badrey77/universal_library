@@ -29,6 +29,8 @@ router.get("/", async (req, res) => {
       title: b.title,
       author: b.author,
       description: b.description,
+      category: b.category,
+      theme: b.theme,
       totalCopies: b.copies.length,
       availableCopies: b.copies.filter((c) => c.status === "AVAILABLE").length,
     }))
@@ -48,6 +50,8 @@ router.get("/:id", async (req, res) => {
     title: book.title,
     author: book.author,
     description: book.description,
+    category: book.category,
+    theme: book.theme,
     copies: book.copies.map((c) => ({ id: c.id, barcode: c.barcode, status: c.status })),
   });
 });
@@ -97,6 +101,8 @@ const createBookSchema = z.object({
   title: z.string().min(1),
   author: z.string().min(1),
   description: z.string().optional(),
+  category: z.string().optional(),
+  theme: z.string().optional(),
   initialCopies: z.number().int().min(0).max(50).default(1),
 });
 
@@ -105,7 +111,7 @@ router.post("/", requireAuth, requireRole("STAFF"), async (req, res) => {
   if (!parsed.success) {
     return res.status(400).json({ error: parsed.error.flatten(), code: "VALIDATION_ERROR" });
   }
-  const { isbn, title, author, description, initialCopies } = parsed.data;
+  const { isbn, title, author, description, category, theme, initialCopies } = parsed.data;
 
   const existing = await prisma.book.findUnique({ where: { isbn } });
   if (existing) {
@@ -118,6 +124,8 @@ router.post("/", requireAuth, requireRole("STAFF"), async (req, res) => {
       title,
       author,
       description,
+      category,
+      theme,
       copies: {
         create: Array.from({ length: initialCopies }, (_, i) => ({
           barcode: `${isbn}-C${i + 1}`,

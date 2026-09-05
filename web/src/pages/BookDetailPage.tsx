@@ -71,6 +71,20 @@ export function BookDetailPage() {
     <div>
       <h1>{book.title}</h1>
       <p className="card-meta">{t("catalog.byAuthor", { author: book.author })}</p>
+      {(book.category || book.theme) && (
+        <div className="book-tags">
+          {book.category && (
+            <span className="book-tag">
+              <span className="book-tag-label">{t("catalog.category")}:</span> {book.category}
+            </span>
+          )}
+          {book.theme && (
+            <span className="book-tag">
+              <span className="book-tag-label">{t("catalog.theme")}:</span> {book.theme}
+            </span>
+          )}
+        </div>
+      )}
       {book.description && <p>{book.description}</p>}
 
       <h2 className="section-heading">{t("catalog.available", { count: availableCount, total: book.copies.length })}</h2>
