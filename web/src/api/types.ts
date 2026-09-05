@@ -10,6 +10,10 @@ export interface Member {
   borrowLimit: number;
 }
 
+export interface MemberDetail extends Member {
+  activeLoanCount: number;
+}
+
 export interface BookSummary {
   id: string;
   isbn: string;

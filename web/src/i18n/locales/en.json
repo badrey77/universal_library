@@ -6,6 +6,7 @@
     "catalog": "Catalog",
     "myLoans": "My Loans",
     "staffDesk": "Staff Desk",
+    "borrowers": "Borrowers",
     "login": "Log in",
     "logout": "Log out",
     "register": "Register"
@@ -88,6 +89,22 @@
     "return": "Return",
     "success": "Success",
     "copyReserved": "This copy is now reserved for member {{memberId}}"
+  },
+  "borrowers": {
+    "title": "Borrowers",
+    "searchPlaceholder": "Search by name or email",
+    "noResults": "No matching borrowers",
+    "addBorrower": "Add Borrower",
+    "addTitle": "Add a Borrower",
+    "borrowLimitOverride": "Borrow limit override (optional)",
+    "borrowLimitHint": "Leave blank to use the default limit",
+    "createSubmit": "Create Borrower",
+    "detailTitle": "Borrower profile",
+    "borrowLimit": "Borrow limit",
+    "activeLoanCount": "Active loans",
+    "loansHeading": "Loans",
+    "holdsHeading": "Holds",
+    "backToList": "Back to borrowers"
   },
   "common": {
     "loading": "Loading…",

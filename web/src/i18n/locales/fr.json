@@ -6,6 +6,7 @@
     "catalog": "Catalogue",
     "myLoans": "Mes emprunts",
     "staffDesk": "Guichet du personnel",
+    "borrowers": "Adhérents",
     "login": "Connexion",
     "logout": "Déconnexion",
     "register": "S'inscrire"
@@ -87,6 +88,22 @@
     "return": "Retourner",
     "success": "Succès",
     "copyReserved": "Cet exemplaire est maintenant réservé pour le membre {{memberId}}"
+  },
+  "borrowers": {
+    "title": "Adhérents",
+    "searchPlaceholder": "Rechercher par nom ou e-mail",
+    "noResults": "Aucun adhérent correspondant",
+    "addBorrower": "Ajouter un adhérent",
+    "addTitle": "Ajouter un adhérent",
+    "borrowLimitOverride": "Limite d'emprunts personnalisée (facultatif)",
+    "borrowLimitHint": "Laisser vide pour utiliser la limite par défaut",
+    "createSubmit": "Créer l'adhérent",
+    "detailTitle": "Fiche de l'adhérent",
+    "borrowLimit": "Limite d'emprunts",
+    "activeLoanCount": "Emprunts en cours",
+    "loansHeading": "Emprunts",
+    "holdsHeading": "Réservations",
+    "backToList": "Retour à la liste des adhérents"
   },
   "common": {
     "loading": "Chargement…",
