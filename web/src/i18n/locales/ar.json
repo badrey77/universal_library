@@ -91,6 +91,15 @@
     "success": "تم بنجاح",
     "copyReserved": "هذه النسخة محجوزة الآن للعضو {{memberId}}"
   },
+  "settings": {
+    "title": "إعدادات المكتبة",
+    "loanPeriodDays": "مدة الإعارة (بالأيام)",
+    "maxRenewals": "الحد الأقصى لعدد التجديدات",
+    "holdReadyDays": "مهلة استلام الحجز (بالأيام)",
+    "defaultBorrowLimit": "الحد الافتراضي للإعارة",
+    "save": "حفظ الإعدادات",
+    "saved": "تم حفظ الإعدادات."
+  },
   "common": {
     "loading": "جارٍ التحميل…",
     "error": "حدث خطأ ما.",

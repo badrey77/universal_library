@@ -4,6 +4,7 @@ import rateLimit from "express-rate-limit";
 import { z } from "zod";
 import { prisma } from "../lib/prisma";
 import { AuthUser, requireAuth, signToken } from "../middleware/auth";
+import { getSettings } from "../lib/settings";
 
 const router = Router();
 
@@ -37,8 +38,9 @@ router.post("/register", authLimiter, async (req, res) => {
   }
 
   const passwordHash = await bcrypt.hash(password, 12);
+  const { defaultBorrowLimit } = await getSettings();
   const member = await prisma.member.create({
-    data: { name, email, passwordHash, role: "PATRON" },
+    data: { name, email, passwordHash, role: "PATRON", borrowLimit: defaultBorrowLimit },
   });
 
   const token = signToken(toAuthUser(member));

@@ -6,6 +6,7 @@ import booksRouter from "./routes/books";
 import circulationRouter from "./routes/circulation";
 import holdsRouter from "./routes/holds";
 import membersRouter from "./routes/members";
+import settingsRouter from "./routes/settings";
 
 // Builds the configured Express app with no side effects (no listen(),
 // no timers). Exported so tests can drive it directly with supertest
@@ -28,6 +29,7 @@ export function createApp() {
   app.use("/api/circulation", circulationRouter);
   app.use("/api/holds", holdsRouter);
   app.use("/api/members", membersRouter);
+  app.use("/api/settings", settingsRouter);
 
   return app;
 }

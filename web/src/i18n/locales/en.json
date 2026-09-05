@@ -87,6 +87,15 @@
     "success": "Success",
     "copyReserved": "This copy is now reserved for member {{memberId}}"
   },
+  "settings": {
+    "title": "Library Settings",
+    "loanPeriodDays": "Loan period (days)",
+    "maxRenewals": "Maximum renewals",
+    "holdReadyDays": "Hold pickup window (days)",
+    "defaultBorrowLimit": "Default borrowing limit",
+    "save": "Save settings",
+    "saved": "Settings saved."
+  },
   "common": {
     "loading": "Loading…",
     "error": "Something went wrong.",

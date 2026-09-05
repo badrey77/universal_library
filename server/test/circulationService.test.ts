@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest";
 import { prisma } from "../src/lib/prisma";
 import { HttpError } from "../src/lib/httpError";
 import { checkoutCopy, returnCopy, renewLoan } from "../src/services/circulationService";
-import { MAX_RENEWALS } from "../src/lib/policy";
+import { getSettings } from "../src/lib/settings";
 
 async function expectHttpErrorCode(promise: Promise<unknown>, code: string) {
   try {
@@ -230,13 +230,14 @@ describe("renewLoan", () => {
     expect(renewed.dueAt.getTime()).toBeGreaterThan(oldDueAt.getTime());
   });
 
-  it("throws RENEWAL_LIMIT_REACHED when the loan is already at MAX_RENEWALS", async () => {
+  it("throws RENEWAL_LIMIT_REACHED when the loan is already at maxRenewals", async () => {
     const book = await createBook();
     const copy = await createCopy(book.id);
     const member = await createMember();
 
     const loan = await checkoutCopy(copy.barcode, member.id);
-    await prisma.loan.update({ where: { id: loan.id }, data: { renewalCount: MAX_RENEWALS } });
+    const { maxRenewals } = await getSettings();
+    await prisma.loan.update({ where: { id: loan.id }, data: { renewalCount: maxRenewals } });
 
     await expectHttpErrorCode(renewLoan(loan.id, { id: member.id, role: "PATRON" }), "RENEWAL_LIMIT_REACHED");
   });
